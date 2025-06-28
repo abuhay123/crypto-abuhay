@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>CryptoAbuhay</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0c0c1d">
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <style>
+    body {
+      direction: rtl;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #0c0c1d;
+      color: white;
+    }
+    .container {
+      padding: 30px 20px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo img {
+      width: 36px;
+    }
+    .logo span {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .menu-icon {
+      font-size: 30px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .sidebar {
+      display: none;
+      flex-direction: column;
+      background: #1f1f3b;
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 200px;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      cursor: pointer;
+    }
+    h1, h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      margin: 15px 0;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      color: white;
+    }
+    .btn-secondary {
+      background: #1f1f3b;
+      color: white;
+    }
+    .tokens {
+      margin-top: 30px;
+    }
+    .token {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+    .token img {
+      width: 32px;
+    }
+    .ai-button {
+      position: fixed;
+      bottom: 70px;
+      left: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      animation: bounce 1.5s infinite;
+    }
+    .ai-button img {
+      width: 50px;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .lang-switch {
+      text-align: center;
+      padding: 10px;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    #import-section, #wallet-section, #settings {
+      display: none;
+      margin-top: 30px;
+    }
+    .setting-row {
+      margin-bottom: 15px;
+    }
+    .setting-row label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .setting-row input, .setting-row select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="logo" onclick="location.reload()">
+      <img src="icon.png" alt="Logo">
+      <span>CryptoAbuhay</span>
+    </div>
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <a onclick="scrollToSection('home')">דף הבית</a>
+    <a onclick="scrollToSection('wallet-section')">הארנק שלי</a>
+    <a onclick="scrollToSection('settings')">הגדרות</a>
+    <a onclick="toggleSidebar()">✖ סגור</a>
+  </div>
+
+  <div class="container" id="home">
+    <h1>השער שלך ל-Solana</h1>
+    <p>נהל את נכסי ה-Solana שלך בצורה מאובטחת.</p>
+    <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
+    <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
+
+    <div id="import-section">
+      <input id="privateKeyInput" type="text" placeholder="הדבק את ה-Private Key שלך" style="width:100%;padding:10px;border-radius:10px;border:none;margin-bottom:10px">
+      <button class="btn btn-primary" onclick="loadWallet()">התחבר</button>
+    </div>
+
+    <div class="tokens">
+      <h2>מטבעות נתמכים</h2>
+      <div class="token" onclick="getTokenInfo('solana')"><img src="sol.png" alt="SOL"> <span>SOL</span></div>
+      <div class="token" onclick="getTokenInfo('usd-coin')"><img src="usdc.png" alt="USDC"> <span>USDC</span></div>
+      <div class="token" onclick="getTokenInfo('tether')"><img src="usdt.png" alt="USDT"> <span>USDT</span></div>
+    </div>
+  </div>
+
+  <div class="container" id="wallet-section">
+    <h2>הארנק שלי</h2>
+    <div id="walletData">אין נתונים</div>
+  </div>
+
+  <div class="container" id="settings">
+    <h2>הגדרות</h2>
+    <div class="setting-row">
+      <label>מצב כהה/בהיר (כרגע: כהה)</label>
+      <select>
+        <option selected>כהה</option>
+        <option>בהיר</option>
+      </select>
+    </div>
+    <div class="setting-row">
+      <label>שפת ממשק</label>
+      <select onchange="switchLang()">
+        <option selected>עברית</option>
+        <option>English</option>
+      </select>
+    </div>
+    <div class="setting-row">
+      <label>מחיקת מטמון</label>
+      <button class="btn btn-secondary" onclick="clearStorage()">נקה נתונים מקומיים</button>
+    </div>
+  </div>
+
+  <button class="ai-button" onclick="alert('איך אפשר לעזור?')">
+    <img src="ai.png" alt="AI Assistant">
+  </button>
+
+  <div class="lang-switch" onclick="switchLang()">English Version</div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.style.display = sidebar.style.display === "flex" ? "none" : "flex";
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+      toggleSidebar();
+    }
+
+    async function createWallet() {
+      const keypair = solanaWeb3.Keypair.generate();
+      const publicKey = keypair.publicKey.toBase58();
+      const secretKey = Array.from(keypair.secretKey);
+      alert("ארנק נוצר!\\n\\nכתובת ציבורית:\\n" + publicKey);
+      console.log("מפתח פרטי:", secretKey);
+    }
+
+    function toggleImport() {
+      const section = document.getElementById('import-section');
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function loadWallet() {
+      try {
+        const input = document.getElementById('privateKeyInput').value;
+        const arr = input.split(',').map(n => parseInt(n));
+        const secret = new Uint8Array(arr);
+        const keypair = solanaWeb3.Keypair.fromSecretKey(secret);
+        const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+        const balance = await conn.getBalance(keypair.publicKey);
+        document.getElementById('walletData').innerText = `כתובת ציבורית: ${keypair.publicKey.toBase58()}\\nיתרה: ${balance / solanaWeb3.LAMPORTS_PER_SOL} SOL`;
+        document.getElementById('wallet-section').scrollIntoView({ behavior: 'smooth' });
+      } catch (e) {
+        alert("נכשל בטעינת הארנק. ודא שהזנת את המפתח כראוי.");
+      }
+    }
+
+    function clearStorage() {
+      localStorage.clear();
+      alert("הנתונים המקומיים נמחקו.");
+    }
+
+    function switchLang() {
+      window.location.href = "index-en.html";
+    }
+
+    async function getTokenInfo(tokenId) {
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${tokenId}`);
+        const data = await res.json();
+        const name = data.name;
+        const price = data.market_data.current_price.usd;
+        const change = data.market_data.price_change_percentage_24h.toFixed(2);
+        alert(`${name}\\nמחיר נוכחי: $${price}\\nשינוי ב-24 שעות: ${change}%`);
+      } catch (err) {
+        alert('לא ניתן לשלוף נתוני מטבע.');
+      }
+    }
+  </script>
+<!-- מתגי מצב כהה/שפה -->
+<div class="switch-container" style="margin-top: 50px; display: flex; justify-content: center; gap: 30px;">
+  <div>
+    <label class="switch">
+      <input type="checkbox" onchange="toggleTheme(this)">
+      <span class="slider"></span>
+    </label>
+    <div class="switch-label">מצב כהה/בהיר</div>
+  </div>
+  <div>
+    <label class="switch">
+      <input type="checkbox" onchange="toggleLanguage(this)">
+      <span class="slider"></span>
+    </label>
+    <div class="switch-label">שינוי שפה</div>
+  </div>
+</div>
+
+</body>
+</html>
