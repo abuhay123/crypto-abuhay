@@ -256,11 +256,16 @@
     <img src="ai.png" alt="AI Assistant">
   </button>
 
-  <!-- כפתור וואטסאפ -->
-  <button id="whatsappBtn" onclick="openWhatsApp()" title="צ'אט עם וואטסאפ" style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; border: none; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; z-index: 1000; animation: bounce 2s infinite;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 28px; height: 28px; object-fit: contain;" />
-  </button>
+<!-- כפתור WhatsApp -->
+<button class="whatsapp-button" onclick="openWhatsApp()">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+</button>
 
+<script>
+  function openWhatsApp() {
+    window.open("https://wa.me/972549665726", "_blank");
+  }
+</script>
   <!-- פופאפ AI -->
   <div id="ai-popup">
     <input type="text" id="aiInput" placeholder="מה תרצה לדעת?">
