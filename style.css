@@ -63,6 +63,8 @@ body {
   text-decoration: none;
   font-size: 16px;
 }
+
+/* סוויצ'ים */
 .switch {
   position: relative;
   display: inline-block;
@@ -105,10 +107,12 @@ input:checked + .slider:before {
   font-size: 14px;
   margin-top: 5px;
 }
+
+/* כפתור וואטסאפ */
 #whatsappBtn {
   position: fixed;
   bottom: 20px;
-  right: 20px; /* ימין */
+  right: 20px;
   background-color: #25D366;
   border: none;
   border-radius: 50%;
@@ -121,4 +125,36 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+#whatsappBtn img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+/* כפתור AI */
+#aiButton {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #6a0dad;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  cursor: pointer;
+  z-index: 1000;
+  animation: bounce 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* אנימציית קפיצה */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
