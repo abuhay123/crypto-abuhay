@@ -13,3 +13,9 @@ function toggleLanguage(elem) {
     switchLang(); // ודא שפונקציית switchLang מוגדרת
   }
 }
+function openWhatsApp() {
+  const phone = "972549665726";
+  const message = "שלום, רציתי לשאול על...";
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
