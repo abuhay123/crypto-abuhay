@@ -116,9 +116,9 @@ input:checked + .slider:before {
   background-color: #25D366;
   border: none;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  width: 56px;
+  height: 56px;
+  box-shadow: none;
   cursor: pointer;
   z-index: 1000;
   animation: bounce 2s infinite;
@@ -129,8 +129,8 @@ input:checked + .slider:before {
 }
 
 #whatsappBtn img {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
@@ -142,9 +142,9 @@ input:checked + .slider:before {
   background-color: #6a0dad;
   border: none;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  width: 56px;
+  height: 56px;
+  box-shadow: none;
   cursor: pointer;
   z-index: 1000;
   animation: bounce 2s infinite;
