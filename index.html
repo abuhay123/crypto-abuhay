@@ -1,5 +1,48 @@
 <!DOCTYPE html>
 <html lang="he">
+  <script>
+  const langData = {
+    he: {
+      title: "CryptoAbuhay",
+      subtitle: "נהל את נכסי ה-Solana שלך בצורה מאובטחת.",
+      create: "צור ארנק חדש",
+      import: "כבר יש לי ארנק",
+      supported: "מטבעות נתמכים",
+      wallet: "הארנק שלי",
+      settings: "הגדרות",
+      clear: "נקה נתונים מקומיים",
+      home: "דף הבית",
+      langSwitch: "שינוי שפה",
+      themeSwitch: "מצב כהה/בהיר",
+    },
+    en: {
+      title: "CryptoAbuhay",
+      subtitle: "Securely manage your Solana assets.",
+      create: "Create New Wallet",
+      import: "I Already Have a Wallet",
+      supported: "Supported Tokens",
+      wallet: "My Wallet",
+      settings: "Settings",
+      clear: "Clear Local Data",
+      home: "Home",
+      langSwitch: "Language Switch",
+      themeSwitch: "Dark/Light Mode",
+    }
+  };
+
+  let currentLang = "he";
+
+  function switchLang() {
+    currentLang = currentLang === "he" ? "en" : "he";
+    document.querySelectorAll("[data-lang]").forEach(el => {
+      const key = el.getAttribute("data-lang");
+      if (langData[currentLang][key]) {
+        el.innerText = langData[currentLang][key];
+      }
+    });
+    document.body.setAttribute("dir", currentLang === "he" ? "rtl" : "ltr");
+  }
+</script>
 <head>
   <meta charset="UTF-8">
   <title>CryptoAbuhay</title>
@@ -273,7 +316,7 @@
     <div id="aiResult" style="color:#ccc; margin-top:10px; font-size:14px;"></div>
   </div>
 
-  <div class="lang-switch" onclick="switchLang()">English Version</div>
+  <div class="lang-switch" data-lang="langSwitch" onclick="switchLang()">שינוי שפה</div>
 
   <!-- מתגים -->
   <div class="switch-container" style="margin-top: 50px; display: flex; justify-content: center; gap: 30px;">
@@ -400,5 +443,10 @@
       window.open(url, '_blank');
     }
   </script>
+  <h1 data-lang="title">השער שלך ל-Solana</h1>
+<p data-lang="subtitle">נהל את נכסי ה-Solana שלך בצורה מאובטחת.</p>
+<button class="btn btn-primary" data-lang="create" onclick="createWallet()">צור ארנק חדש</button>
+<button class="btn btn-secondary" data-lang="import" onclick="toggleImport()">כבר יש לי ארנק</button>
+<h2 data-lang="supported">מטבעות נתמכים</h2>
 </body>
 </html>
