@@ -107,8 +107,8 @@ input:checked + .slider:before {
 }
 #whatsappBtn {
   position: fixed;
-  bottom: 20px; /* ← תוקן */
-  right: 90px;  /* ← אם העוזר נמצא ב־right: 20px, זה ישים את ווטסאפ משמאלו */
+  bottom: 20px;
+  right: 20px; /* ימין */
   background-color: #25D366;
   border: none;
   border-radius: 50%;
@@ -121,9 +121,4 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-#whatsappBtn img {
-  width: 30px;
-  height: 30px;
 }
