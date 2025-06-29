@@ -107,31 +107,27 @@ input:checked + .slider:before {
   font-size: 14px;
   margin-top: 5px;
 }
-
-/* כפתור וואטסאפ */
-#whatsappBtn {
+/* כפתור WhatsApp זהה לכפתור AI */
+.whatsapp-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 70px;
   right: 20px;
-  background-color: #25D366;
-  border: none;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #25D366, #128C7E); /* גוונים של וואטסאפ */
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  box-shadow: none;
+  border: none;
   cursor: pointer;
-  z-index: 1000;
-  animation: bounce 2s infinite;
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  animation: pulse 1.5s infinite;
+  z-index: 999;
 }
-
-#whatsappBtn img {
+.whatsapp-button img {
   width: 28px;
   height: 28px;
-  object-fit: contain;
 }
 
 /* כפתור AI */
