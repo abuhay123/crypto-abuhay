@@ -200,16 +200,16 @@
 
  <div class="sidebar" id="sidebar">
   <strong style="color:#aaa;">⚙️ הגדרות</strong>
-  <a onclick="alert('ניהול חשבונות')">🧑‍💼 ניהול חשבונות <span style="float:left;color:#888;">2</span></a>
-  <a onclick="alert('העדפות')">⚙️ העדפות</a>
-  <a onclick="alert('אבטחה ופרטיות')">🛡️ אבטחה ופרטיות</a>
-  <a onclick="alert('רשתות פעילות')">🌐 רשתות פעילות <span style="float:left;color:#888;">6</span></a>
-  <a onclick="alert('ספר כתובות')">📒 ספר כתובות</a>
-  <a onclick="alert('אפליקציות מחוברות')">🔗 אפליקציות מחוברות <span style="float:left;color:#888;">4</span></a>
-  <a onclick="alert('הגדרות מפתחים')">👨‍💻 הגדרות מפתחים</a>
-  <a href="https://support.phantom.app" target="_blank">❓ עזרה ותמיכה</a>
-  <a onclick="alert('הזמן חברים')">💜 הזמן חברים</a>
-  <a onclick="alert('אודות CryptoAbuhay')">📣 אודות CryptoAbuhay</a>
+  <a onclick="scrollToSection('accounts')">🧑‍💼 ניהול חשבונות</a>
+  <a onclick="scrollToSection('preferences')">⚙️ העדפות</a>
+  <a onclick="scrollToSection('privacy')">🛡️ אבטחה ופרטיות</a>
+  <a onclick="scrollToSection('networks')">🌐 רשתות פעילות</a>
+  <a onclick="scrollToSection('addressBook')">📒 ספר כתובות</a>
+  <a onclick="scrollToSection('apps')">🔗 אפליקציות מחוברות</a>
+  <a onclick="scrollToSection('developer')">👨‍💻 הגדרות מפתחים</a>
+  <a onclick="scrollToSection('support')">❓ עזרה ותמיכה</a>
+  <a onclick="scrollToSection('invite')">💜 הזמן חברים</a>
+  <a onclick="scrollToSection('about')">📣 אודות CryptoAbuhay</a>
   <a onclick="toggleSidebar()">✖ סגור</a>
 </div>
 
@@ -218,7 +218,16 @@
     <p>נהל את נכסי ה-Solana שלך בצורה מאובטחת.</p>
     <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
     <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
-
+<div class="container" id="accounts"><h2>ניהול חשבונות</h2><p>בחר, הוסף או מחק חשבונות ארנק.</p></div>
+<div class="container" id="preferences"><h2>העדפות</h2><p>בחר ערכת נושא, שפה, או תצורה מועדפת.</p></div>
+<div class="container" id="privacy"><h2>אבטחה ופרטיות</h2><p>הפעל אימות, נעל את הארנק, מחק נתונים רגישים.</p></div>
+<div class="container" id="networks"><h2>רשתות פעילות</h2><p>בחר או שנה את הרשת המבוקשת: mainnet, devnet ועוד.</p></div>
+<div class="container" id="addressBook"><h2>ספר כתובות</h2><p>נהל אנשי קשר להעברה מהירה.</p></div>
+<div class="container" id="apps"><h2>אפליקציות מחוברות</h2><p>סקור או נתק גישה לאפליקציות צד שלישי.</p></div>
+<div class="container" id="developer"><h2>הגדרות מפתחים</h2><p>חשוף מפתחות, הצג לוגים, או הגדר רשת מותאמת אישית.</p></div>
+<div class="container" id="support"><h2>עזרה ותמיכה</h2><p>עיין בשאלות נפוצות או צור קשר עם התמיכה.</p></div>
+<div class="container" id="invite"><h2>הזמן חברים</h2><p>שתף את האפליקציה וקבל תגמולים.</p></div>
+<div class="container" id="about"><h2>אודות</h2><p>אפליקציית CryptoAbuhay — ארנק Solana מתקדם עם AI.</p></div>
     <div id="import-section">
       <input id="privateKeyInput" type="text" placeholder="הדבק את ה-Private Key שלך" style="width:100%;padding:10px;border-radius:10px;border:none;margin-bottom:10px">
       <button class="btn btn-primary" onclick="loadWallet()">התחבר</button>
@@ -308,9 +317,9 @@
     }
 
     function scrollToSection(id) {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-      toggleSidebar();
-    }
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  toggleSidebar();
+}
 
     async function createWallet() {
       const keypair = solanaWeb3.Keypair.generate();
