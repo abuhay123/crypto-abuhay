@@ -1,3 +1,5 @@
+let currentLang = "he";
+
 function toggleTheme(elem) {
   if (elem.checked) {
     document.body.style.background = '#f5f5f5';
@@ -9,13 +11,34 @@ function toggleTheme(elem) {
 }
 
 function toggleLanguage(elem) {
-  if (elem.checked) {
-    switchLang(); // ודא שפונקציית switchLang מוגדרת
-  }
+  const newLang = elem.checked ? "en" : "he";
+  setLanguage(newLang);
 }
+
+function setLanguage(lang) {
+  currentLang = lang;
+  const d = langData[lang];
+  document.querySelector("h1").innerText = d.title;
+  document.querySelector("p").innerText = d.description;
+  document.querySelector(".btn-primary").innerText = d.createWallet;
+  document.querySelector(".btn-secondary").innerText = d.alreadyHaveWallet;
+  document.querySelector("h2").innerText = d.supportedTokens;
+  document.querySelector("#wallet-section h2").innerText = d.myWallet;
+  document.querySelector("#settings h2").innerText = d.settings;
+  document.querySelectorAll(".setting-row label")[0].innerText = d.themeLabel;
+  document.querySelectorAll(".setting-row label")[1].innerText = d.langLabel;
+  document.querySelector("#settings button").innerText = d.clearCache;
+  document.querySelectorAll(".switch-label")[0].innerText = d.darkMode;
+  document.querySelectorAll(".switch-label")[1].innerText = d.langSwitch;
+}
+
 function openWhatsApp() {
   const phone = "972549665726";
   const message = "שלום, רציתי לשאול על...";
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
 }
+
+window.onload = () => {
+  setLanguage("he");
+};
