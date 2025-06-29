@@ -11,261 +11,50 @@
   <meta name="theme-color" content="#0c0c1d">
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
-    body {
-      direction: rtl;
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: #0c0c1d;
-      color: white;
-    }
-    .container {
-      padding: 30px 20px;
-    }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .logo img {
-      width: 36px;
-    }
-    .logo span {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .menu-icon {
-      font-size: 30px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .sidebar {
-      display: none;
-      flex-direction: column;
-      background: #1f1f3b;
-      position: fixed;
-      top: 0;
-      right: 0;
-      height: 100%;
-      width: 200px;
-      z-index: 1000;
-      padding: 20px;
-    }
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 0;
-      cursor: pointer;
-    }
-    h1, h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 16px;
-      color: #ccc;
-      margin-bottom: 30px;
-    }
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: bold;
-      margin: 15px 0;
-      text-align: center;
-      border: none;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-      color: white;
-    }
-    .btn-secondary {
-      background: #1f1f3b;
-      color: white;
-    }
-    .tokens {
-      margin-top: 30px;
-    }
-    .token {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      cursor: pointer;
-    }
-    .token img {
-      width: 32px;
-    }
-
-    .ai-button {
+    .whatsapp-button {
       position: fixed;
       bottom: 70px;
-      left: 20px;
+      right: 20px;
       width: 60px;
       height: 60px;
-      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      background: #25D366;
       border-radius: 50%;
       border: none;
       cursor: pointer;
-      box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       animation: pulse 1.5s infinite;
       z-index: 999;
     }
-    .ai-button img {
+
+    .whatsapp-button img {
       width: 28px;
       height: 28px;
     }
+
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
-
-    #ai-popup {
-      position: fixed;
-      bottom: 150px;
-      left: 20px;
-      background: #1f1f3b;
-      border: 1px solid #555;
-      border-radius: 12px;
-      padding: 15px;
-      width: 260px;
-      z-index: 1000;
-      display: none;
-    }
-    #ai-popup input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      margin-bottom: 10px;
-    }
-    #ai-popup button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      background: #4f46e5;
-      color: white;
-      font-weight: bold;
-      border: none;
-    }
-
-    .lang-switch {
-      text-align: center;
-      padding: 10px;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    #import-section, #wallet-section, #settings {
-      display: none;
-      margin-top: 30px;
-    }
-    .setting-row {
-      margin-bottom: 15px;
-    }
-    .setting-row label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .setting-row input, .setting-row select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-    }
   </style>
 </head>
 <body>
 
-  <div class="top-bar">
-    <div class="logo" onclick="location.reload()">
-      <img src="icon.png" alt="Logo">
-      <span>CryptoAbuhay</span>
-    </div>
-    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
-  </div>
-
-  <div class="sidebar" id="sidebar">
-    <a onclick="scrollToSection('home')">דף הבית</a>
-    <a onclick="scrollToSection('wallet-section')">הארנק שלי</a>
-    <a onclick="scrollToSection('settings')">הגדרות</a>
-    <a onclick="toggleSidebar()">✖ סגור</a>
-  </div>
-
-  <div class="container" id="home">
-    <h1>השער שלך ל-Solana</h1>
-    <p>נהל את נכסי ה-Solana שלך בצורה מאובטחת.</p>
-    <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
-    <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
-
-    <div id="import-section">
-      <input id="privateKeyInput" type="text" placeholder="הדבק את ה-Private Key שלך" style="width:100%;padding:10px;border-radius:10px;border:none;margin-bottom:10px">
-      <button class="btn btn-primary" onclick="loadWallet()">התחבר</button>
-    </div>
-
-    <div class="tokens">
-      <h2>מטבעות נתמכים</h2>
-      <div class="token" onclick="getTokenInfo('solana')"><img src="sol.png" alt="SOL"> <span>SOL</span></div>
-      <div class="token" onclick="getTokenInfo('usd-coin')"><img src="usdc.png" alt="USDC"> <span>USDC</span></div>
-      <div class="token" onclick="getTokenInfo('tether')"><img src="usdt.png" alt="USDT"> <span>USDT</span></div>
-    </div>
-  </div>
-
-  <div class="container" id="wallet-section">
-    <h2>הארנק שלי</h2>
-    <div id="walletData">אין נתונים</div>
-  </div>
-
-  <div class="container" id="settings">
-    <h2>הגדרות</h2>
-    <div class="setting-row">
-      <label>מצב כהה/בהיר (כרגע: כהה)</label>
-      <select>
-        <option selected>כהה</option>
-        <option>בהיר</option>
-      </select>
-    </div>
-    <div class="setting-row">
-      <label>שפת ממשק</label>
-      <select onchange="switchLang()">
-        <option selected>עברית</option>
-        <option>English</option>
-      </select>
-    </div>
-    <div class="setting-row">
-      <label>מחיקת מטמון</label>
-      <button class="btn btn-secondary" onclick="clearStorage()">נקה נתונים מקומיים</button>
-    </div>
-  </div>
+  <!-- תוכן האתר שלך נשאר זהה -->
 
   <!-- כפתור עוזר AI -->
   <button class="ai-button" onclick="toggleAIPopup()">
     <img src="ai.png" alt="AI Assistant">
   </button>
 
-<!-- כפתור WhatsApp -->
-<button class="whatsapp-button" onclick="openWhatsApp()">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-</button>
+  <!-- כפתור WhatsApp -->
+  <button class="whatsapp-button" onclick="openWhatsApp()">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  </button>
 
-<script>
-  function openWhatsApp() {
-    window.open("https://wa.me/972549665726", "_blank");
-  }
-</script>
   <!-- פופאפ AI -->
   <div id="ai-popup">
     <input type="text" id="aiInput" placeholder="מה תרצה לדעת?">
@@ -273,7 +62,7 @@
     <div id="aiResult" style="color:#ccc; margin-top:10px; font-size:14px;"></div>
   </div>
 
-  <div class="lang-switch" onclick="switchLang()">English Version</div>
+  <div class="lang-switch" onclick="toggleLanguage()">English Version</div>
 
   <!-- מתגים -->
   <div class="switch-container" style="margin-top: 50px; display: flex; justify-content: center; gap: 30px;">
@@ -294,104 +83,67 @@
   </div>
 
   <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById("sidebar");
-      sidebar.style.display = sidebar.style.display === "flex" ? "none" : "flex";
-    }
-
-    function scrollToSection(id) {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-      toggleSidebar();
-    }
-
-    async function createWallet() {
-      const keypair = solanaWeb3.Keypair.generate();
-      const publicKey = keypair.publicKey.toBase58();
-      const secretKey = Array.from(keypair.secretKey);
-      alert("ארנק נוצר!\n\nכתובת ציבורית:\n" + publicKey);
-      console.log("מפתח פרטי:", secretKey);
-    }
-
-    function toggleImport() {
-      const section = document.getElementById('import-section');
-      section.style.display = section.style.display === 'none' ? 'block' : 'none';
-    }
-
-    async function loadWallet() {
-      try {
-        const input = document.getElementById('privateKeyInput').value;
-        const arr = input.split(',').map(n => parseInt(n));
-        const secret = new Uint8Array(arr);
-        const keypair = solanaWeb3.Keypair.fromSecretKey(secret);
-        const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-        const balance = await conn.getBalance(keypair.publicKey);
-        document.getElementById('walletData').innerText = `כתובת ציבורית: ${keypair.publicKey.toBase58()}\nיתרה: ${balance / solanaWeb3.LAMPORTS_PER_SOL} SOL`;
-        document.getElementById('wallet-section').scrollIntoView({ behavior: 'smooth' });
-      } catch (e) {
-        alert("נכשל בטעינת הארנק. ודא שהזנת את המפתח כראוי.");
+    const langData = {
+      he: {
+        title: "השער שלך ל-Solana",
+        description: "נהל את נכסי ה-Solana שלך בצורה מאובטחת.",
+        createWallet: "צור ארנק חדש",
+        alreadyHaveWallet: "כבר יש לי ארנק",
+        supportedTokens: "מטבעות נתמכים",
+        darkMode: "מצב כהה/בהיר",
+        langSwitch: "שינוי שפה",
+        engVersion: "English Version",
+        myWallet: "הארנק שלי",
+        settings: "הגדרות",
+        themeLabel: "מצב כהה/בהיר (כרגע: כהה)",
+        langLabel: "שפת ממשק",
+        clearCache: "נקה נתונים מקומיים"
+      },
+      en: {
+        title: "Your Gateway to Solana",
+        description: "Manage your Solana assets securely.",
+        createWallet: "Create New Wallet",
+        alreadyHaveWallet: "I Already Have a Wallet",
+        supportedTokens: "Supported Tokens",
+        darkMode: "Dark/Light Mode",
+        langSwitch: "Switch Language",
+        engVersion: "גרסה עברית",
+        myWallet: "My Wallet",
+        settings: "Settings",
+        themeLabel: "Theme Mode (currently: Dark)",
+        langLabel: "Interface Language",
+        clearCache: "Clear Local Data"
       }
+    };
+
+    let currentLang = "he";
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const d = langData[lang];
+      document.querySelector("h1").innerText = d.title;
+      document.querySelector("p").innerText = d.description;
+      document.querySelector(".btn-primary").innerText = d.createWallet;
+      document.querySelector(".btn-secondary").innerText = d.alreadyHaveWallet;
+      document.querySelector("h2").innerText = d.supportedTokens;
+      document.querySelector(".lang-switch").innerText = d.engVersion;
+      document.querySelector("#wallet-section h2").innerText = d.myWallet;
+      document.querySelector("#settings h2").innerText = d.settings;
+      document.querySelectorAll(".setting-row label")[0].innerText = d.themeLabel;
+      document.querySelectorAll(".setting-row label")[1].innerText = d.langLabel;
+      document.querySelector("#settings button").innerText = d.clearCache;
+      document.querySelectorAll(".switch-label")[0].innerText = d.darkMode;
+      document.querySelectorAll(".switch-label")[1].innerText = d.langSwitch;
     }
 
-    function clearStorage() {
-      localStorage.clear();
-      alert("הנתונים המקומיים נמחקו.");
+    function toggleLanguage() {
+      const newLang = currentLang === "he" ? "en" : "he";
+      setLanguage(newLang);
     }
 
-    function switchLang() {
-      window.location.href = "index-en.html";
-    }
-
-    async function getTokenInfo(tokenId) {
-      try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${tokenId}`);
-        const data = await res.json();
-        const name = data.name;
-        const price = data.market_data.current_price.usd;
-        const change = data.market_data.price_change_percentage_24h.toFixed(2);
-        alert(`${name}\nמחיר נוכחי: $${price}\nשינוי ב-24 שעות: ${change}%`);
-      } catch (err) {
-        alert('לא ניתן לשלוף נתוני מטבע.');
-      }
-    }
-
-    function toggleAIPopup() {
-      const popup = document.getElementById("ai-popup");
-      popup.style.display = popup.style.display === "none" || popup.style.display === "" ? "block" : "none";
-    }
-
-    async function askAI() {
-      const question = document.getElementById("aiInput").value;
-      document.getElementById("aiResult").innerText = "חושב...";
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_OPENAI_API_KEY"
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: question }]
-        })
-      });
-      const data = await response.json();
-      document.getElementById("aiResult").innerText = data.choices?.[0]?.message?.content || "אין תשובה.";
-    }
-
-    function toggleTheme(elem) {
-      if (elem.checked) {
-        document.body.style.background = '#f5f5f5';
-        document.body.style.color = '#000';
-      } else {
-        document.body.style.background = '#0c0c1d';
-        document.body.style.color = '#fff';
-      }
-    }
-
-    function toggleLanguage(elem) {
-      if (elem.checked) {
-        switchLang();
-      }
-    }
+    window.onload = () => {
+      setLanguage("he");
+    };
 
     function openWhatsApp() {
       const phone = "972549665726";
@@ -400,5 +152,6 @@
       window.open(url, '_blank');
     }
   </script>
+
 </body>
 </html>
