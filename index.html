@@ -105,7 +105,6 @@
       width: 32px;
     }
 
-    /* כפתור AI עגול */
     .ai-button {
       position: fixed;
       bottom: 70px;
@@ -133,7 +132,6 @@
       100% { transform: scale(1); }
     }
 
-    /* פופאפ AI */
     #ai-popup {
       position: fixed;
       bottom: 150px;
@@ -189,10 +187,6 @@
       border: none;
     }
   </style>
-  <!-- WhatsApp Button -->
-<button id="whatsappBtn" onclick="openWhatsApp()" title="צ'אט עם וואטסאפ">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
-</button>
 </head>
 <body>
 
@@ -257,9 +251,14 @@
     </div>
   </div>
 
-  <!-- כפתור AI -->
+  <!-- כפתור עוזר AI -->
   <button class="ai-button" onclick="toggleAIPopup()">
     <img src="ai.png" alt="AI Assistant">
+  </button>
+
+  <!-- כפתור וואטסאפ -->
+  <button id="whatsappBtn" onclick="openWhatsApp()" title="צ'אט עם וואטסאפ" style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; border: none; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; z-index: 1000; animation: bounce 2s infinite;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 28px; height: 28px; object-fit: contain;" />
   </button>
 
   <!-- פופאפ AI -->
@@ -362,7 +361,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_OPENAI_API_KEY" // שנה למפתח שלך
+          "Authorization": "Bearer YOUR_OPENAI_API_KEY"
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
@@ -387,6 +386,13 @@
       if (elem.checked) {
         switchLang();
       }
+    }
+
+    function openWhatsApp() {
+      const phone = "972549665726";
+      const message = "שלום, רציתי לשאול על CryptoAbuhay";
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
     }
   </script>
 </body>
