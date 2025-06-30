@@ -153,7 +153,9 @@ input:checked + .slider:before {
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
-  #accounts,
+}
+
+#accounts,
 #preferences,
 #privacy,
 #networks,
