@@ -155,7 +155,7 @@ input:checked + .slider:before {
   50% { transform: translateY(-5px); }
 }
 .sidebar a {
-  display: block;
+  display: none;
   padding: 10px;
   border-radius: 8px;
   margin: 8px 0;
@@ -167,8 +167,4 @@ input:checked + .slider:before {
 .sidebar a:hover {
   background: #3b3b5f;
 }
-.modal {
-  display: none;
-  position: fixed;
-  /* שאר העיצוב... */
-}
+
