@@ -167,3 +167,8 @@ input:checked + .slider:before {
 .sidebar a:hover {
   background: #3b3b5f;
 }
+.modal {
+  display: none;
+  position: fixed;
+  /* שאר העיצוב... */
+}
