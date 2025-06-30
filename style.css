@@ -5,17 +5,16 @@ body {
   color: #fff;
 }
 
+/* === תפריט המבורגר ישן (למחיקה אם לא בשימוש) === */
 #menuToggle {
   position: absolute;
   top: 20px;
   right: 20px;
   z-index: 1;
 }
-
 #menuToggle input {
   display: none;
 }
-
 #menuToggle span {
   display: block;
   width: 33px;
@@ -25,19 +24,15 @@ body {
   border-radius: 3px;
   transition: 0.3s;
 }
-
 #menuToggle input:checked ~ span:nth-child(1) {
   transform: rotate(45deg) translate(6px, 6px);
 }
-
 #menuToggle input:checked ~ span:nth-child(2) {
   opacity: 0;
 }
-
 #menuToggle input:checked ~ span:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -6px);
 }
-
 #menu {
   position: absolute;
   top: 60px;
@@ -49,15 +44,12 @@ body {
   border-radius: 8px;
   display: none;
 }
-
 #menuToggle input:checked ~ #menu {
   display: block;
 }
-
 #menu li {
   margin: 15px 0;
 }
-
 #menu a {
   color: white;
   text-decoration: none;
@@ -170,43 +162,7 @@ input:checked + .slider:before {
   display: none;
 }
 
-/* === תפריט צד מעוצב === */
-.sidebar {
-  display: none;
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  width: 260px;
-  background: #1a1a2e;
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 1000;
-}
-
-.sidebar.active {
-  display: block;
-}
-
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: right;
-}
-
-.sidebar-menu li {
-  padding: 12px 10px;
-  margin-bottom: 10px;
-  background: #2a2a40;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-  font-size: 16px;
-}
-
-.sidebar-menu li:hover {
-  background: #3a3a5c;
-}
+/* === תפריט הגדרות חדש === */
 .settings-menu {
   position: fixed;
   top: 0;
