@@ -154,8 +154,24 @@ input:checked + .slider:before {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
 }
-.sidebar a {
+.sidebar {
   display: none;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 240px;
+  background: #1a1a2e;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+.sidebar.active {
+  display: block;
+}
+
+.sidebar a {
+  display: block;
   padding: 10px;
   border-radius: 8px;
   margin: 8px 0;
@@ -167,4 +183,3 @@ input:checked + .slider:before {
 .sidebar a:hover {
   background: #3b3b5f;
 }
-
