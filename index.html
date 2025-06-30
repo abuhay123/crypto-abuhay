@@ -187,6 +187,7 @@
       border: none;
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -198,19 +199,24 @@
     <div class="menu-icon" onclick="toggleSidebar()">☰</div>
   </div>
 
- <div class="sidebar" id="sidebar">
-  <strong style="color:#aaa;">⚙️ הגדרות</strong>
-  <a onclick="scrollToSection('accounts')">🧑‍💼 ניהול חשבונות</a>
-  <a onclick="scrollToSection('preferences')">⚙️ העדפות</a>
-  <a onclick="scrollToSection('privacy')">🛡️ אבטחה ופרטיות</a>
-  <a onclick="scrollToSection('networks')">🌐 רשתות פעילות</a>
-  <a onclick="scrollToSection('addressBook')">📒 ספר כתובות</a>
-  <a onclick="scrollToSection('apps')">🔗 אפליקציות מחוברות</a>
-  <a onclick="scrollToSection('developer')">👨‍💻 הגדרות מפתחים</a>
-  <a onclick="scrollToSection('support')">❓ עזרה ותמיכה</a>
-  <a onclick="scrollToSection('invite')">💜 הזמן חברים</a>
-  <a onclick="scrollToSection('about')">📣 אודות CryptoAbuhay</a>
-  <a onclick="toggleSidebar()">✖ סגור</a>
+<div class="settings-menu" id="sidebar">
+  <div class="settings-header">
+    <h2>⚙️ הגדרות</h2>
+    <input type="text" class="search-settings" placeholder="חפש בהגדרות...">
+  </div>
+  <div class="settings-list">
+    <div class="setting-item" onclick="scrollToSection('accounts')"><i class="fas fa-user-circle"></i> ניהול חשבונות</div>
+    <div class="setting-item" onclick="scrollToSection('preferences')"><i class="fas fa-sliders-h"></i> העדפות</div>
+    <div class="setting-item" onclick="scrollToSection('privacy')"><i class="fas fa-shield-alt"></i> אבטחה ופרטיות</div>
+    <div class="setting-item" onclick="scrollToSection('networks')"><i class="fas fa-network-wired"></i> רשתות פעילות</div>
+    <div class="setting-item" onclick="scrollToSection('addressBook')"><i class="fas fa-address-book"></i> ספר כתובות</div>
+    <div class="setting-item" onclick="scrollToSection('apps')"><i class="fas fa-plug"></i> אפליקציות מחוברות</div>
+    <div class="setting-item" onclick="scrollToSection('developer')"><i class="fas fa-code"></i> הגדרות מפתחים</div>
+    <div class="setting-item" onclick="scrollToSection('support')"><i class="fas fa-question-circle"></i> עזרה ותמיכה</div>
+    <div class="setting-item" onclick="scrollToSection('invite')"><i class="fas fa-user-friends"></i> הזמן חברים</div>
+    <div class="setting-item" onclick="scrollToSection('about')"><i class="fas fa-info-circle"></i> אודות CryptoAbuhay</div>
+    <div class="setting-item" onclick="toggleSidebar()"><i class="fas fa-times"></i> סגור</div>
+  </div>
 </div>
 
   <div class="container" id="home">
