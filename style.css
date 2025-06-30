@@ -207,3 +207,70 @@ input:checked + .slider:before {
 .sidebar-menu li:hover {
   background: #3a3a5c;
 }
+.settings-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 270px;
+  height: 100%;
+  background: #1a1a2e;
+  padding: 20px;
+  z-index: 999;
+  display: none;
+  flex-direction: column;
+  box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+
+.settings-menu.active {
+  display: flex;
+}
+
+.settings-header {
+  margin-bottom: 20px;
+}
+
+.settings-header h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.search-settings {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #2e2e4d;
+  color: white;
+  font-size: 14px;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.setting-item {
+  background: #2a2a40;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.setting-item:hover {
+  background: #3a3a5c;
+}
+
+.setting-item i {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
