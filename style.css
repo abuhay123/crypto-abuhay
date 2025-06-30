@@ -153,6 +153,18 @@ input:checked + .slider:before {
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
+  #accounts,
+#preferences,
+#privacy,
+#networks,
+#addressBook,
+#apps,
+#developer,
+#support,
+#invite,
+#about {
+  display: none;
+}
 }
 .sidebar {
   display: none;
@@ -170,16 +182,4 @@ input:checked + .slider:before {
   display: block;
 }
 
-.sidebar a {
-  display: block;
-  padding: 10px;
-  border-radius: 8px;
-  margin: 8px 0;
-  background: #2a2a4c;
-  color: white;
-  text-decoration: none;
-  transition: background 0.3s;
-}
-.sidebar a:hover {
-  background: #3b3b5f;
-}
+
