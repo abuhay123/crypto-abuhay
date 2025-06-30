@@ -64,7 +64,7 @@ body {
   font-size: 16px;
 }
 
-/* סוויצ'ים */
+/* === סוויצ'ים === */
 .switch {
   position: relative;
   display: inline-block;
@@ -107,14 +107,15 @@ input:checked + .slider:before {
   font-size: 14px;
   margin-top: 5px;
 }
-/* כפתור WhatsApp זהה לכפתור AI */
+
+/* === כפתור WhatsApp === */
 .whatsapp-button {
   position: fixed;
   bottom: 70px;
   right: 20px;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #25D366, #128C7E); /* גוונים של וואטסאפ */
+  background: linear-gradient(135deg, #25D366, #128C7E);
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -130,7 +131,7 @@ input:checked + .slider:before {
   height: 28px;
 }
 
-/* כפתור AI */
+/* === כפתור AI === */
 #aiButton {
   position: fixed;
   bottom: 20px;
@@ -149,12 +150,13 @@ input:checked + .slider:before {
   justify-content: center;
 }
 
-/* אנימציית קפיצה */
+/* === אנימציית קפיצה === */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
 }
 
+/* === הסתרת בלוקים הגדרות === */
 #accounts,
 #preferences,
 #privacy,
@@ -167,13 +169,14 @@ input:checked + .slider:before {
 #about {
   display: none;
 }
-}
+
+/* === תפריט צד מעוצב === */
 .sidebar {
   display: none;
   position: fixed;
   top: 60px;
   right: 20px;
-  width: 240px;
+  width: 260px;
   background: #1a1a2e;
   padding: 20px;
   border-radius: 10px;
@@ -184,4 +187,23 @@ input:checked + .slider:before {
   display: block;
 }
 
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+}
 
+.sidebar-menu li {
+  padding: 12px 10px;
+  margin-bottom: 10px;
+  background: #2a2a40;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 16px;
+}
+
+.sidebar-menu li:hover {
+  background: #3a3a5c;
+}
