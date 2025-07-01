@@ -2,123 +2,113 @@
 <html lang="he">
 <head>
   <meta charset="UTF-8">
-  <title>התחברות / הרשמה - CryptoAbuhay</title>
+  <title>CryptoAbuhay - התחברות / הרשמה</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="module" src="auth.js" defer></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
     body {
       direction: rtl;
       background: #0c0c1d;
+      font-family: 'Arial', sans-serif;
       color: white;
-      font-family: Arial, sans-serif;
-      padding: 40px;
+      margin: 0;
+      padding: 0;
     }
-    h1 {
+
+    .container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 20px;
+      background-color: #1b1b2f;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+
+    h2 {
       text-align: center;
       margin-bottom: 30px;
     }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    input {
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
       width: 100%;
       padding: 12px;
-      border-radius: 20px;
+      margin-bottom: 15px;
       border: none;
+      border-radius: 5px;
+      background-color: #2d2d44;
+      color: white;
       font-size: 16px;
-      margin-top: 5px;
     }
-    .btn {
+
+    button {
       width: 100%;
-      padding: 15px;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: bold;
-      margin: 15px 0;
-      text-align: center;
+      padding: 12px;
       border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 10px;
       cursor: pointer;
     }
-    .btn-primary {
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+
+    #registerBtn {
+      background: linear-gradient(to right, #4facfe, #00f2fe);
       color: white;
     }
-    .google-btn {
+
+    #loginBtn {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      color: white;
+    }
+
+    #googleBtn {
       background: white;
-      color: black;
+      color: #444;
     }
-    .success {
-      background: green;
-      color: white;
-      padding: 10px;
-      margin-top: 20px;
-      border-radius: 12px;
+
+    .switch-link {
       text-align: center;
+      margin-top: 10px;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .switch-link:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- כפתור חזרה -->
-  <button id="backBtn" onclick="window.history.back()" style="
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 26px;
-    color: white;
-    cursor: pointer;
-    z-index: 10;
-    display: none;
-  ">&larr;</button>
+  <div class="container">
+    <h2 id="formTitle">הרשמה</h2>
 
-  <h1 id="formTitle">טוען...</h1>
+    <input type="email" id="email" placeholder="אימייל">
+    <input type="password" id="password" placeholder="סיסמה">
 
-  <div class="form-group">
-    <label>שם משתמש</label>
-    <input type="text" id="username" style="display: none;">
+    <button id="registerBtn">הרשמה</button>
+    <button id="loginBtn" class="hidden">התחברות</button>
+    <button id="googleBtn">התחברות עם Google</button>
+
+    <div class="switch-link" onclick="toggleMode()">יש לך חשבון? התחבר</div>
   </div>
-
-  <div class="form-group">
-    <label>אימייל</label>
-    <input type="email" id="email">
-  </div>
-
-  <div class="form-group">
-    <label>סיסמה</label>
-    <input type="password" id="password">
-  </div>
-
-  <button id="mainActionBtn" class="btn btn-primary">התחברות</button>
-  <button class="btn google-btn" onclick="googleLogin()">התחברות עם Google</button>
-
-  <div id="status" class="success" style="display:none;"></div>
 
   <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const action = params.get("action");
-      const title = document.getElementById("formTitle");
-      const mainBtn = document.getElementById("mainActionBtn");
+    let isRegisterMode = true;
 
-      if (action === "signup") {
-        title.innerText = "הרשמה";
-        mainBtn.innerText = "הרשמה";
-        mainBtn.onclick = register;
-        document.getElementById("username").style.display = "block";
-      } else {
-        title.innerText = "התחברות";
-        mainBtn.innerText = "התחברות";
-        mainBtn.onclick = login;
-        document.getElementById("username").style.display = "none";
-      }
-
-      // הצגת כפתור חזרה רק אם יש action
-      if (action === "signup" || action === "login") {
-        document.getElementById("backBtn").style.display = "block";
-      }
-    });
+    function toggleMode() {
+      isRegisterMode = !isRegisterMode;
+      document.getElementById("formTitle").innerText = isRegisterMode ? "הרשמה" : "התחברות";
+      document.getElementById("registerBtn").classList.toggle("hidden", !isRegisterMode);
+      document.getElementById("loginBtn").classList.toggle("hidden", isRegisterMode);
+      document.querySelector(".switch-link").innerText = isRegisterMode ? "יש לך חשבון? התחבר" : "אין לך חשבון? הירשם";
+    }
   </script>
 
 </body>
