@@ -1,5 +1,6 @@
 // auth.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -7,16 +8,15 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
+  apiKey: "AIzaSyBmfKqmuUv4zTggScRmKpFCD6XOt4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
   projectId: "crypto-abuhay",
   storageBucket: "crypto-abuhay.appspot.com",
-  messagingSenderId: "132295840726",
-  appId: "1:132295840726:web:dff5437dc85ea4b54aca77",
-  measurementId: "G-237S2P0HVS"
+  messagingSenderId: "your_sender_id",
+  appId: "your_app_id"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -24,48 +24,40 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 window.register = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const username = document.getElementById("username").value;
+  const email = document.getElementById("registerEmail").value;
+  const password = document.getElementById("registerPassword").value;
+  const username = document.getElementById("registerUsername").value;
 
   try {
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(userCred.user);
-
-    localStorage.setItem("user", JSON.stringify({
-      uid: userCred.user.uid,
-      email: userCred.user.email,
-      username
-    }));
-
-    document.getElementById("status").innerText = "נרשמת בהצלחה! נא לאשר את המייל שלך.";
-    document.getElementById("status").style.display = "block";
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await sendEmailVerification(userCredential.user);
+    localStorage.setItem("user", JSON.stringify({ email, username }));
+    document.getElementById("registerMessage").innerText = "נרשמת בהצלחה! נא לאשר את המייל שלך.";
+    document.getElementById("registerMessage").style.background = "green";
   } catch (error) {
-    alert(error.message);
+    document.getElementById("registerMessage").innerText = "שגיאה: " + error.message;
+    document.getElementById("registerMessage").style.background = "red";
   }
 };
 
 window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
   try {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    
-    if (!userCred.user.emailVerified) {
-      alert("יש לאשר את כתובת האימייל לפני ההתחברות.");
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    if (!userCredential.user.emailVerified) {
+      document.getElementById("loginMessage").innerText = "נא לאשר את כתובת המייל לפני כניסה.";
+      document.getElementById("loginMessage").style.background = "orange";
       return;
     }
 
-    localStorage.setItem("user", JSON.stringify({
-      uid: userCred.user.uid,
-      email: userCred.user.email
-    }));
-
-    document.getElementById("status").innerText = "התחברת בהצלחה!";
-    document.getElementById("status").style.display = "block";
+    localStorage.setItem("user", JSON.stringify({ email }));
+    document.getElementById("loginMessage").innerText = "התחברת בהצלחה!";
+    document.getElementById("loginMessage").style.background = "green";
   } catch (error) {
-    alert(error.message);
+    document.getElementById("loginMessage").innerText = "שגיאה: " + error.message;
+    document.getElementById("loginMessage").style.background = "red";
   }
 };
 
@@ -73,16 +65,10 @@ window.googleLogin = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-
-    localStorage.setItem("user", JSON.stringify({
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName
-    }));
-
-    document.getElementById("status").innerText = "התחברת עם גוגל בהצלחה!";
-    document.getElementById("status").style.display = "block";
+    localStorage.setItem("user", JSON.stringify({ email: user.email }));
+    alert("התחברת עם Google בהצלחה!");
+    window.location.href = "index.html";
   } catch (error) {
-    alert(error.message);
+    alert("שגיאה ב־Google Sign-In: " + error.message);
   }
 };
