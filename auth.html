@@ -47,14 +47,18 @@
       background: white;
       color: black;
     }
-    .success {
-      background: green;
-      color: white;
-      padding: 10px;
-      margin-top: 20px;
+    .message-box {
+      background: #1e1e2f;
+      padding: 12px;
       border-radius: 12px;
       text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+      display: none;
     }
+    .message-box.success { background: green; color: white; }
+    .message-box.error { background: red; color: white; }
+    .message-box.warning { background: orange; color: white; }
     .back-btn {
       position: fixed;
       top: 20px;
@@ -75,23 +79,26 @@
 
   <div class="form-group">
     <label>שם משתמש</label>
-    <input type="text" id="username" style="display: none;">
+    <input type="text" id="registerUsername" style="display: none;">
   </div>
 
   <div class="form-group">
     <label>אימייל</label>
-    <input type="email" id="email">
+    <input type="email" id="registerEmail" placeholder="name@example.com">
+    <input type="email" id="loginEmail" style="display:none;" placeholder="name@example.com">
   </div>
 
   <div class="form-group">
     <label>סיסמה</label>
-    <input type="password" id="password">
+    <input type="password" id="registerPassword" placeholder="********">
+    <input type="password" id="loginPassword" style="display:none;" placeholder="********">
   </div>
 
   <button id="mainActionBtn" class="btn btn-primary">התחברות</button>
   <button class="btn google-btn" onclick="googleLogin()">התחברות עם Google</button>
 
-  <div id="status" class="success" style="display:none;"></div>
+  <div id="registerMessage" class="message-box success"></div>
+  <div id="loginMessage" class="message-box success"></div>
 
   <script>
     window.addEventListener("DOMContentLoaded", () => {
@@ -100,16 +107,32 @@
       const title = document.getElementById("formTitle");
       const mainBtn = document.getElementById("mainActionBtn");
 
+      const username = document.getElementById("registerUsername");
+      const registerEmail = document.getElementById("registerEmail");
+      const registerPassword = document.getElementById("registerPassword");
+      const loginEmail = document.getElementById("loginEmail");
+      const loginPassword = document.getElementById("loginPassword");
+
       if (action === "signup") {
         title.innerText = "הרשמה";
         mainBtn.innerText = "הרשמה";
         mainBtn.onclick = register;
-        document.getElementById("username").style.display = "block";
+
+        username.style.display = "block";
+        registerEmail.style.display = "block";
+        registerPassword.style.display = "block";
+        loginEmail.style.display = "none";
+        loginPassword.style.display = "none";
       } else {
         title.innerText = "התחברות";
         mainBtn.innerText = "התחברות";
         mainBtn.onclick = login;
-        document.getElementById("username").style.display = "none";
+
+        username.style.display = "none";
+        registerEmail.style.display = "none";
+        registerPassword.style.display = "none";
+        loginEmail.style.display = "block";
+        loginPassword.style.display = "block";
       }
     });
   </script>
