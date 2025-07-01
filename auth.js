@@ -24,7 +24,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 🟩 פונקציית הרשמה
+// 🟢 פונקציית הרשמה
 window.register = async function () {
   const username = document.getElementById("registerUsername").value;
   const email = document.getElementById("registerEmail").value;
@@ -46,7 +46,7 @@ window.register = async function () {
   }
 };
 
-// 🟦 פונקציית התחברות
+// 🔵 פונקציית התחברות
 window.login = async function () {
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
@@ -67,7 +67,10 @@ window.login = async function () {
     msgBox.className = "message-box success";
     msgBox.style.display = "block";
 
-    setTimeout(() => window.location.href = "index.html", 1500);
+    // ✅ מעביר לעמוד הראשי אחרי שנייה
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1000);
   } catch (error) {
     msgBox.innerText = "שגיאה: " + error.message;
     msgBox.className = "message-box error";
@@ -75,7 +78,7 @@ window.login = async function () {
   }
 };
 
-// 🟨 התחברות עם גוגל
+// 🟡 התחברות עם Google
 window.googleLogin = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
@@ -83,7 +86,10 @@ window.googleLogin = async function () {
 
     localStorage.setItem("user", JSON.stringify({ email: user.email }));
     alert("התחברת עם Google בהצלחה!");
-    window.location.href = "index.html";
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 500);
   } catch (error) {
     alert("שגיאה בהתחברות עם Google: " + error.message);
   }
