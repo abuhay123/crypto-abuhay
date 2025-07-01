@@ -10,21 +10,23 @@ import {
   GoogleAuthProvider
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-// Firebase config שלך
+// 🔑 הקונפיג המתוקן שלך:
 const firebaseConfig = {
-  apiKey: "AIzaSyBmfKqmuUv4zTggScRmKpFCD6XOt4b8gr4",
+  apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
   projectId: "crypto-abuhay",
-  storageBucket: "crypto-abuhay.appspot.com",
+  storageBucket: "crypto-abuhay.appspot.com", // ← זה היה לא נכון
   messagingSenderId: "132295840726",
-  appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
+  appId: "1:132295840726:web:dff5437dc85ea4b54aca77",
+  measurementId: "G-237S2P0HVS"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 🟢 פונקציית הרשמה
+// ✅ פונקציות גלובליות ל־auth.html
+
 window.register = async function () {
   const username = document.getElementById("registerUsername").value;
   const email = document.getElementById("registerEmail").value;
@@ -34,7 +36,6 @@ window.register = async function () {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
-
     localStorage.setItem("user", JSON.stringify({ email, username }));
     msgBox.innerText = "נרשמת בהצלחה! נא לאשר את כתובת האימייל.";
     msgBox.className = "message-box success";
@@ -46,7 +47,6 @@ window.register = async function () {
   }
 };
 
-// 🔵 פונקציית התחברות
 window.login = async function () {
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
@@ -54,7 +54,6 @@ window.login = async function () {
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-
     if (!userCredential.user.emailVerified) {
       msgBox.innerText = "נא לאשר את כתובת האימייל לפני התחברות.";
       msgBox.className = "message-box warning";
@@ -67,7 +66,6 @@ window.login = async function () {
     msgBox.className = "message-box success";
     msgBox.style.display = "block";
 
-    // ✅ מעביר לעמוד הראשי אחרי שנייה
     setTimeout(() => {
       window.location.href = "index.html";
     }, 1000);
@@ -78,7 +76,6 @@ window.login = async function () {
   }
 };
 
-// 🟡 התחברות עם Google
 window.googleLogin = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
@@ -86,7 +83,6 @@ window.googleLogin = async function () {
 
     localStorage.setItem("user", JSON.stringify({ email: user.email }));
     alert("התחברת עם Google בהצלחה!");
-
     setTimeout(() => {
       window.location.href = "index.html";
     }, 500);
