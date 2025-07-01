@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>התחברות / הרשמה - Solaya</title>
+  <script type="module" src="auth.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    body {
+      direction: rtl;
+      background: #0c0c1d;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .google-btn {
+      background: #fff;
+      color: #000;
+    }
+    .success {
+      background: green;
+      color: white;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>התחברות / הרשמה</h1>
+
+  <div class="form-group">
+    <label>שם משתמש</label>
+    <input type="text" id="username">
+  </div>
+
+  <div class="form-group">
+    <label>אימייל</label>
+    <input type="email" id="email">
+  </div>
+
+  <div class="form-group">
+    <label>סיסמה</label>
+    <input type="password" id="password">
+  </div>
+
+  <button onclick="register()">הרשמה</button>
+  <button onclick="login()">התחברות</button>
+  <button class="google-btn" onclick="googleLogin()">התחברות עם גוגל</button>
+
+  <div id="status" class="success" style="display:none;"></div>
+
+</body>
+</html>
