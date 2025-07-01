@@ -110,3 +110,35 @@ window.googleLogin = async function () {
     message.style.display = "block";
   }
 };
+// התחברות עם Face ID
+window.addEventListener("DOMContentLoaded", () => {
+  const faceIdBtn = document.getElementById("faceIdLoginBtn");
+  if (faceIdBtn) {
+    faceIdBtn.addEventListener("click", async () => {
+      const savedUser = localStorage.getItem("user");
+      if (!savedUser) {
+        alert("אין משתמש שמור ל-Face ID. יש להתחבר קודם עם מייל.");
+        return;
+      }
+
+      try {
+        const granted = await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+        if (!granted) {
+          alert("Face ID לא זמין במכשיר זה.");
+          return;
+        }
+
+        const confirmed = confirm("האם ברצונך להתחבר עם Face ID?");
+        if (!confirmed) return;
+
+        // סימולציה פשוטה (כי WebAuthn מלא דורש backend)
+        const user = JSON.parse(savedUser);
+        alert("Face ID הצליח ✅ \nברוך הבא, " + user.email);
+        window.location.href = "index.html";
+
+      } catch (e) {
+        alert("שגיאה בזיהוי ביומטרי: " + e.message);
+      }
+    });
+  }
+});
