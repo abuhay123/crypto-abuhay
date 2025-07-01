@@ -10,57 +10,73 @@ import {
   GoogleAuthProvider
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
+// ✅ קונפיגורציה תקינה כולל כל הערכים הנדרשים
 const firebaseConfig = {
   apiKey: "AIzaSyBmfKqmuUv4zTggScRmKpFCD6XOt4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
   projectId: "crypto-abuhay",
   storageBucket: "crypto-abuhay.appspot.com",
-  messagingSenderId: "your_sender_id",
-  appId: "your_app_id"
+  messagingSenderId: "132295840726",
+  appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// ✅ הרשמה
 window.register = async function () {
-  const email = document.getElementById("registerEmail").value;
-  const password = document.getElementById("registerPassword").value;
-  const username = document.getElementById("registerUsername").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const username = document.getElementById("username").value;
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
     localStorage.setItem("user", JSON.stringify({ email, username }));
-    document.getElementById("registerMessage").innerText = "נרשמת בהצלחה! נא לאשר את המייל שלך.";
-    document.getElementById("registerMessage").style.background = "green";
+    const status = document.getElementById("status");
+    status.innerText = "נרשמת בהצלחה! נא לאשר את המייל שלך.";
+    status.style.display = "block";
+    status.style.background = "green";
   } catch (error) {
-    document.getElementById("registerMessage").innerText = "שגיאה: " + error.message;
-    document.getElementById("registerMessage").style.background = "red";
+    const status = document.getElementById("status");
+    status.innerText = "שגיאה: " + error.message;
+    status.style.display = "block";
+    status.style.background = "red";
   }
 };
 
+// ✅ התחברות
 window.login = async function () {
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     if (!userCredential.user.emailVerified) {
-      document.getElementById("loginMessage").innerText = "נא לאשר את כתובת המייל לפני כניסה.";
-      document.getElementById("loginMessage").style.background = "orange";
+      const status = document.getElementById("status");
+      status.innerText = "נא לאשר את כתובת המייל לפני כניסה.";
+      status.style.display = "block";
+      status.style.background = "orange";
       return;
     }
 
     localStorage.setItem("user", JSON.stringify({ email }));
-    document.getElementById("loginMessage").innerText = "התחברת בהצלחה!";
-    document.getElementById("loginMessage").style.background = "green";
+    const status = document.getElementById("status");
+    status.innerText = "התחברת בהצלחה!";
+    status.style.display = "block";
+    status.style.background = "green";
+
+    window.location.href = "index.html";
   } catch (error) {
-    document.getElementById("loginMessage").innerText = "שגיאה: " + error.message;
-    document.getElementById("loginMessage").style.background = "red";
+    const status = document.getElementById("status");
+    status.innerText = "שגיאה: " + error.message;
+    status.style.display = "block";
+    status.style.background = "red";
   }
 };
 
+// ✅ התחברות עם גוגל
 window.googleLogin = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
