@@ -190,16 +190,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<script>
-  // בודק אם יש משתמש – ומחכה שהדף ייטען
-  document.addEventListener("DOMContentLoaded", () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user || !user.email) {
-      // מפנה לעמוד התחברות רק אם באמת אין משתמש
-      window.location.href = "auth.html?action=login";
-    }
-  });
-</script>
   <div class="top-bar">
     <div class="logo" onclick="location.reload()">
       <img src="icon.png" alt="Logo">
