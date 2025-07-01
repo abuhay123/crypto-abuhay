@@ -10,7 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBmfKqmuUv4zTggScRmKpFCD6XOt4b8gr4",
+  apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
   projectId: "crypto-abuhay",
   storageBucket: "crypto-abuhay.appspot.com",
