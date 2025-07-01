@@ -230,3 +230,6 @@ input:checked + .slider:before {
   width: 24px;
   text-align: center;
 }
+.sidebar.active {
+  display: flex;
+}
