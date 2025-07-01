@@ -9,8 +9,9 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
+// ✅ קונפיגורציה אמיתית לפי Firebase שלך
 const firebaseConfig = {
-  apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
+  apiKey: "AIzaSyBmfKqmuUv4zTggScRmKpFCD6XOt4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
   projectId: "crypto-abuhay",
   storageBucket: "crypto-abuhay.appspot.com",
@@ -22,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// הרשמה
+// 🔐 הרשמה
 window.register = async function () {
   const email = document.getElementById("registerEmail").value;
   const password = document.getElementById("registerPassword").value;
@@ -31,14 +32,7 @@ window.register = async function () {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
-
     message.innerText = "נרשמת בהצלחה. נשלח מייל לאימות!";
-    setTimeout(() => {
-  const wantsFaceID = confirm("רוצה להתחבר אוטומטית עם Face ID בפעם הבאה?");
-  if (wantsFaceID) {
-    localStorage.setItem("useFaceID", "true");
-  }
-}, 1000);
     message.className = "message-box success";
     message.style.display = "block";
   } catch (error) {
@@ -48,7 +42,7 @@ window.register = async function () {
   }
 };
 
-// התחברות
+// 🔓 התחברות
 window.login = async function () {
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
@@ -71,17 +65,14 @@ window.login = async function () {
     message.className = "message-box success";
     message.style.display = "block";
 
-    // שמירת משתמש בלוקאל סטורג'
     localStorage.setItem("user", JSON.stringify({
       email: user.email,
       uid: user.uid
     }));
 
-    // מעבר חזרה לדף הבית
     setTimeout(() => {
       window.location.href = "index.html";
     }, 2000);
-
   } catch (error) {
     message.innerText = "שגיאה: " + error.message;
     message.className = "message-box error";
@@ -89,7 +80,7 @@ window.login = async function () {
   }
 };
 
-// התחברות עם גוגל
+// 🔐 התחברות עם Google
 window.googleLogin = async function () {
   const message = document.getElementById("loginMessage");
 
@@ -102,49 +93,41 @@ window.googleLogin = async function () {
       uid: user.uid
     }));
 
-    message.innerText = "התחברת בהצלחה עם גוגל!";
+    message.innerText = "התחברת בהצלחה עם Google!";
     message.className = "message-box success";
     message.style.display = "block";
 
     setTimeout(() => {
       window.location.href = "index.html";
     }, 2000);
-
   } catch (error) {
     message.innerText = "שגיאה: " + error.message;
     message.className = "message-box error";
     message.style.display = "block";
   }
 };
-// התחברות עם Face ID
-window.addEventListener("DOMContentLoaded", () => {
-  const faceIdBtn = document.getElementById("faceIdLoginBtn");
-  if (faceIdBtn) {
-    faceIdBtn.addEventListener("click", async () => {
-      const savedUser = localStorage.getItem("user");
-      if (!savedUser) {
-        alert("אין משתמש שמור ל-Face ID. יש להתחבר קודם עם מייל.");
-        return;
-      }
+window.startFaceID = async function () {
+  if (!window.PublicKeyCredential) {
+    alert("המכשיר שלך לא תומך בזיהוי ביומטרי (Face ID או טביעת אצבע).");
+    return;
+  }
 
-      try {
-        const granted = await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-        if (!granted) {
-          alert("Face ID לא זמין במכשיר זה.");
-          return;
-        }
-
-        const confirmed = confirm("האם ברצונך להתחבר עם Face ID?");
-        if (!confirmed) return;
-
-        // סימולציה פשוטה (כי WebAuthn מלא דורש backend)
-        const user = JSON.parse(savedUser);
-        alert("Face ID הצליח ✅ \nברוך הבא, " + user.email);
-        window.location.href = "index.html";
-
-      } catch (e) {
-        alert("שגיאה בזיהוי ביומטרי: " + e.message);
+  try {
+    const credential = await navigator.credentials.get({
+      publicKey: {
+        challenge: new Uint8Array(32),
+        timeout: 60000,
+        userVerification: "preferred",
+        allowCredentials: []
       }
     });
+
+    if (credential) {
+      alert("הזדהית בהצלחה עם Face ID!");
+      // אם תרצה, תבצע מעבר לדף הבית:
+      window.location.href = "index.html";
+    }
+  } catch (error) {
+    alert("נכשלה ההזדהות: " + error.message);
   }
-});
+};
