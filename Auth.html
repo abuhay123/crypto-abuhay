@@ -2,7 +2,7 @@
 <html lang="he">
 <head>
   <meta charset="UTF-8">
-  <title>התחברות / הרשמה - Solaya</title>
+  <title>התחברות / הרשמה - CryptoAbuhay</title>
   <script type="module" src="auth.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
@@ -15,43 +15,51 @@
     }
     h1 {
       text-align: center;
+      margin-bottom: 30px;
     }
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
     input {
       width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 20px;
       border: none;
+      font-size: 16px;
       margin-top: 5px;
     }
-    button {
+    .btn {
       width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 15px;
+      border-radius: 25px;
+      font-size: 16px;
       font-weight: bold;
+      margin: 15px 0;
+      text-align: center;
       border: none;
-      margin-top: 10px;
       cursor: pointer;
     }
+    .btn-primary {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      color: white;
+    }
     .google-btn {
-      background: #fff;
-      color: #000;
+      background: white;
+      color: black;
     }
     .success {
       background: green;
       color: white;
       padding: 10px;
       margin-top: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
       text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <h1>התחברות / הרשמה</h1>
+  <h1 id="formTitle">טוען...</h1>
 
   <div class="form-group">
     <label>שם משתמש</label>
@@ -68,11 +76,30 @@
     <input type="password" id="password">
   </div>
 
-  <button class="btn btn-primary" onclick="window.location.href='auth.html?action=signup'">הרשמה</button>
-<button class="btn btn-primary" onclick="window.location.href='auth.html?action=login'">התחברות</button>
-  <button class="google-btn" onclick="googleLogin()">התחברות עם גוגל</button>
+  <button id="mainActionBtn" class="btn btn-primary">התחברות</button>
+  <button class="btn google-btn" onclick="googleLogin()">התחברות עם Google</button>
 
   <div id="status" class="success" style="display:none;"></div>
 
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const action = params.get("action");
+      const title = document.getElementById("formTitle");
+      const mainBtn = document.getElementById("mainActionBtn");
+
+      if (action === "signup") {
+        title.innerText = "הרשמה";
+        mainBtn.innerText = "הרשמה";
+        mainBtn.onclick = register;
+        document.getElementById("username").style.display = "block";
+      } else {
+        title.innerText = "התחברות";
+        mainBtn.innerText = "התחברות";
+        mainBtn.onclick = login;
+        document.getElementById("username").style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
