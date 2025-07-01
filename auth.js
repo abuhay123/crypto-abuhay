@@ -33,6 +33,12 @@ window.register = async function () {
     await sendEmailVerification(userCredential.user);
 
     message.innerText = "נרשמת בהצלחה. נשלח מייל לאימות!";
+    setTimeout(() => {
+  const wantsFaceID = confirm("רוצה להתחבר אוטומטית עם Face ID בפעם הבאה?");
+  if (wantsFaceID) {
+    localStorage.setItem("useFaceID", "true");
+  }
+}, 1000);
     message.className = "message-box success";
     message.style.display = "block";
   } catch (error) {
