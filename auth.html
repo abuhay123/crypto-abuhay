@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>התחברות / הרשמה - CryptoAbuhay</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <script type="module" src="auth.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
     body {
       direction: rtl;
@@ -59,6 +59,20 @@
 </head>
 <body>
 
+  <!-- כפתור חזרה -->
+  <button id="backBtn" onclick="window.history.back()" style="
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: white;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+  ">&larr;</button>
+
   <h1 id="formTitle">טוען...</h1>
 
   <div class="form-group">
@@ -76,7 +90,7 @@
     <input type="password" id="password">
   </div>
 
-  <button id="mainActionBtn" class="btn btn-primary">טוען...</button>
+  <button id="mainActionBtn" class="btn btn-primary">התחברות</button>
   <button class="btn google-btn" onclick="googleLogin()">התחברות עם Google</button>
 
   <div id="status" class="success" style="display:none;"></div>
@@ -91,13 +105,18 @@
       if (action === "signup") {
         title.innerText = "הרשמה";
         mainBtn.innerText = "הרשמה";
-        mainBtn.onclick = () => register(); // ← חשוב: קריאה לפונקציה
+        mainBtn.onclick = register;
         document.getElementById("username").style.display = "block";
       } else {
         title.innerText = "התחברות";
         mainBtn.innerText = "התחברות";
-        mainBtn.onclick = () => login(); // ← חשוב: קריאה לפונקציה
+        mainBtn.onclick = login;
         document.getElementById("username").style.display = "none";
+      }
+
+      // הצגת כפתור חזרה רק אם יש action
+      if (action === "signup" || action === "login") {
+        document.getElementById("backBtn").style.display = "block";
       }
     });
   </script>
