@@ -246,3 +246,21 @@ input:checked + .slider:before {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.big-button {
+  width: 100%;
+  max-width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 30px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background 0.3s;
+}
+
+.big-button:hover {
+  background: linear-gradient(90deg, #4f46e5, #9333ea);
+}
