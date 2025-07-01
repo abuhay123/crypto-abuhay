@@ -10,7 +10,7 @@ import {
   GoogleAuthProvider
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-// ✅ קונפיגורציה תקינה כולל כל הערכים הנדרשים
+// Firebase config שלך
 const firebaseConfig = {
   apiKey: "AIzaSyBmfKqmuUv4zTggScRmKpFCD6XOt4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
@@ -24,67 +24,67 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ✅ הרשמה
+// 🟩 פונקציית הרשמה
 window.register = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const username = document.getElementById("username").value;
+  const username = document.getElementById("registerUsername").value;
+  const email = document.getElementById("registerEmail").value;
+  const password = document.getElementById("registerPassword").value;
+  const msgBox = document.getElementById("registerMessage");
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
+
     localStorage.setItem("user", JSON.stringify({ email, username }));
-    const status = document.getElementById("status");
-    status.innerText = "נרשמת בהצלחה! נא לאשר את המייל שלך.";
-    status.style.display = "block";
-    status.style.background = "green";
+    msgBox.innerText = "נרשמת בהצלחה! נא לאשר את כתובת האימייל.";
+    msgBox.className = "message-box success";
+    msgBox.style.display = "block";
   } catch (error) {
-    const status = document.getElementById("status");
-    status.innerText = "שגיאה: " + error.message;
-    status.style.display = "block";
-    status.style.background = "red";
+    msgBox.innerText = "שגיאה: " + error.message;
+    msgBox.className = "message-box error";
+    msgBox.style.display = "block";
   }
 };
 
-// ✅ התחברות
+// 🟦 פונקציית התחברות
 window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  const msgBox = document.getElementById("loginMessage");
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
     if (!userCredential.user.emailVerified) {
-      const status = document.getElementById("status");
-      status.innerText = "נא לאשר את כתובת המייל לפני כניסה.";
-      status.style.display = "block";
-      status.style.background = "orange";
+      msgBox.innerText = "נא לאשר את כתובת האימייל לפני התחברות.";
+      msgBox.className = "message-box warning";
+      msgBox.style.display = "block";
       return;
     }
 
     localStorage.setItem("user", JSON.stringify({ email }));
-    const status = document.getElementById("status");
-    status.innerText = "התחברת בהצלחה!";
-    status.style.display = "block";
-    status.style.background = "green";
+    msgBox.innerText = "התחברת בהצלחה!";
+    msgBox.className = "message-box success";
+    msgBox.style.display = "block";
 
-    window.location.href = "index.html";
+    setTimeout(() => window.location.href = "index.html", 1500);
   } catch (error) {
-    const status = document.getElementById("status");
-    status.innerText = "שגיאה: " + error.message;
-    status.style.display = "block";
-    status.style.background = "red";
+    msgBox.innerText = "שגיאה: " + error.message;
+    msgBox.className = "message-box error";
+    msgBox.style.display = "block";
   }
 };
 
-// ✅ התחברות עם גוגל
+// 🟨 התחברות עם גוגל
 window.googleLogin = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+
     localStorage.setItem("user", JSON.stringify({ email: user.email }));
     alert("התחברת עם Google בהצלחה!");
     window.location.href = "index.html";
   } catch (error) {
-    alert("שגיאה ב־Google Sign-In: " + error.message);
+    alert("שגיאה בהתחברות עם Google: " + error.message);
   }
 };
