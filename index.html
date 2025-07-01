@@ -221,6 +221,10 @@
     <div class="setting-item" onclick="scrollToSection('invite')"><i class="fas fa-user-friends"></i> הזמן חברים</div>
     <div class="setting-item" onclick="scrollToSection('about')"><i class="fas fa-info-circle"></i> אודות CryptoAbuhay</div>
     <div class="setting-item" onclick="toggleSidebar()"><i class="fas fa-times"></i> סגור</div>
+    <div class="setting-row">
+  <label>יציאה מהמערכת</label>
+  <button class="btn btn-secondary" onclick="logout()">התנתקות</button>
+</div>
   </div>
 </div>
 
@@ -431,6 +435,11 @@
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
     }
+    function logout() {
+  localStorage.removeItem("user");
+  alert("התנתקת בהצלחה.");
+  window.location.href = "auth.html?action=login";
+}
   </script>
 </body>
 </html>
