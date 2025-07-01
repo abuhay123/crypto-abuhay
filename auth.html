@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>התחברות / הרשמה - CryptoAbuhay</title>
-  <script type="module" src="auth.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script type="module" src="auth.js" defer></script>
   <style>
     body {
       direction: rtl;
@@ -76,7 +76,7 @@
     <input type="password" id="password">
   </div>
 
-  <button id="mainActionBtn" class="btn btn-primary">התחברות</button>
+  <button id="mainActionBtn" class="btn btn-primary">טוען...</button>
   <button class="btn google-btn" onclick="googleLogin()">התחברות עם Google</button>
 
   <div id="status" class="success" style="display:none;"></div>
@@ -91,15 +91,16 @@
       if (action === "signup") {
         title.innerText = "הרשמה";
         mainBtn.innerText = "הרשמה";
-        mainBtn.onclick = register;
+        mainBtn.onclick = () => register(); // ← חשוב: קריאה לפונקציה
         document.getElementById("username").style.display = "block";
       } else {
         title.innerText = "התחברות";
         mainBtn.innerText = "התחברות";
-        mainBtn.onclick = login;
+        mainBtn.onclick = () => login(); // ← חשוב: קריאה לפונקציה
         document.getElementById("username").style.display = "none";
       }
     });
   </script>
+
 </body>
 </html>
