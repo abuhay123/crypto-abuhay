@@ -1,84 +1,74 @@
-// auth.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import {
   getAuth,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
   signInWithPopup,
   GoogleAuthProvider
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
+  apiKey: "AlzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
   projectId: "crypto-abuhay",
-  storageBucket: "crypto-abuhay.firebasestorage.app",
+  storageBucket: "crypto-abuhay.appspot.com",
   messagingSenderId: "132295840726",
-  appId: "1:132295840726:web:dff5437dc85ea4b54aca77",
-  measurementId: "G-237S2P0HVS"
+  appId: "1:132295840726:web:XXXXXX" // אם חסר תוסיף את זה מהקונסול
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-window.register = async function () {
+// הרשמה רגילה
+document.getElementById("registerBtn")?.addEventListener("click", () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  const username = document.getElementById("username").value;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      sendEmailVerification(user);
+      localStorage.setItem("user", JSON.stringify(user));
+      alert("נרשמת בהצלחה! נשלח אליך מייל לאימות החשבון.");
+      window.location.href = "home.html";
+    })
+    .catch((error) => {
+      alert("שגיאה בהרשמה: " + error.message);
+    });
+});
 
-  try {
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    localStorage.setItem("user", JSON.stringify({
-      uid: userCred.user.uid,
-      email: userCred.user.email,
-      username
-    }));
-    document.getElementById("status").innerText = "נרשמת בהצלחה!";
-    document.getElementById("status").style.display = "block";
-
-    // מעבר לדף הבית אחרי הרשמה
-    setTimeout(() => window.location.href = "index.html", 1500);
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-window.login = async function () {
+// התחברות רגילה
+document.getElementById("loginBtn")?.addEventListener("click", () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      localStorage.setItem("user", JSON.stringify(user));
+      alert("התחברת בהצלחה!");
+      window.location.href = "home.html";
+    })
+    .catch((error) => {
+      alert("שגיאה בהתחברות: " + error.message);
+    });
+});
 
-  try {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    localStorage.setItem("user", JSON.stringify({
-      uid: userCred.user.uid,
-      email: userCred.user.email
-    }));
-    document.getElementById("status").innerText = "התחברת בהצלחה!";
-    document.getElementById("status").style.display = "block";
+// התחברות עם Google
+document.getElementById("googleBtn")?.addEventListener("click", () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      const user = result.user;
+      localStorage.setItem("user", JSON.stringify(user));
+      alert("התחברת בהצלחה עם Google!");
+      window.location.href = "home.html";
+    })
+    .catch((error) => {
+      alert("שגיאה: " + error.message);
+    });
+});
 
-    // מעבר לדף הבית אחרי התחברות
-    setTimeout(() => window.location.href = "index.html", 1500);
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-window.googleLogin = async function () {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    localStorage.setItem("user", JSON.stringify({
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName
-    }));
-    document.getElementById("status").innerText = "התחברת עם גוגל בהצלחה!";
-    document.getElementById("status").style.display = "block";
-
-    // מעבר לדף הבית אחרי התחברות עם Google
-    setTimeout(() => window.location.href = "index.html", 1500);
-  } catch (error) {
-    alert(error.message);
-  }
-};
+// בדיקת התחברות אוטומטית
+if (localStorage.getItem("user") && window.location.pathname.includes("auth.html")) {
+  window.location.href = "home.html";
+}
