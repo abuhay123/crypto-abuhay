@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>CryptoAbuhay | הארנק שלי</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      direction: rtl;
+      background-color: #0c0c1d;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .top-bar {
+      padding: 20px;
+      text-align: center;
+      background-color: #1f1f3b;
+      border-bottom: 1px solid #333;
+    }
+    .top-bar h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .balance {
+      text-align: center;
+      padding: 25px;
+    }
+    .balance h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+    .balance p {
+      margin: 5px 0;
+      color: #ccc;
+    }
+    .actions {
+      display: flex;
+      justify-content: space-around;
+      padding: 15px;
+    }
+    .action-btn {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 20px;
+      border: none;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .search-section {
+      padding: 20px;
+    }
+    .search-section input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+    .results {
+      padding: 0 20px;
+    }
+    .result-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #333;
+    }
+    .result-item img {
+      width: 24px;
+      height: 24px;
+      margin-left: 10px;
+    }
+    .tokens {
+      padding: 20px;
+    }
+    .token {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <h2>הארנק שלי</h2>
+    <div id="publicKeyDisplay">...</div>
+  </div>
+
+  <div class="balance">
+    <h1 id="usdBalance">$0.00</h1>
+    <p id="solBalance">0 SOL</p>
+  </div>
+
+  <div class="actions">
+    <button class="action-btn">קבל</button>
+    <button class="action-btn">שלח</button>
+    <button class="action-btn">החלף</button>
+    <button class="action-btn">קנה</button>
+  </div>
+
+  <div class="search-section">
+    <input type="text" id="searchInput" placeholder="חפש מטבע לרכישה...">
+  </div>
+  <div class="results" id="results"></div>
+
+  <div class="tokens">
+    <h3>מטבעות שרכשת:</h3>
+    <div id="tokenList">עדיין לא רכשת מטבעות</div>
+  </div>
+
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <script>
+    const publicKey = localStorage.getItem("wallet_publicKey");
+    const secretKey = JSON.parse(localStorage.getItem("wallet_secretKey") || "[]");
+
+    document.getElementById("publicKeyDisplay").innerText = publicKey || "לא נמצא";
+
+    if (publicKey && secretKey.length > 0) {
+      const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+      const pubKeyObj = new solanaWeb3.PublicKey(publicKey);
+
+      conn.getBalance(pubKeyObj).then(lamports => {
+        const sol = lamports / solanaWeb3.LAMPORTS_PER_SOL;
+        document.getElementById("solBalance").innerText = `${sol.toFixed(4)} SOL`;
+        document.getElementById("usdBalance").innerText = `$${(sol * 150).toFixed(2)}`;
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", async function() {
+      const query = this.value.toLowerCase();
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "טוען תוצאות...";
+
+      if (query.length < 2) {
+        resultsDiv.innerHTML = "";
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${query}`);
+        const data = await res.json();
+        resultsDiv.innerHTML = "";
+
+        data.coins.slice(0, 5).forEach(coin => {
+          const item = document.createElement("div");
+          item.className = "result-item";
+          item.innerHTML = `
+            <div>
+              <img src="${coin.thumb}" alt="${coin.name}">
+              ${coin.name}
+            </div>
+            <span>${coin.symbol.toUpperCase()}</span>
+          `;
+          resultsDiv.appendChild(item);
+        });
+      } catch (err) {
+        resultsDiv.innerHTML = "שגיאה בטעינה.";
+      }
+    });
+  </script>
+</body>
+</html>
