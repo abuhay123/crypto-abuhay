@@ -451,9 +451,9 @@
       window.open(url, '_blank');
     }
     function logout() {
-  localStorage.removeItem("user");
+  localStorage.clear(); // מוחק גם user וגם userDisplayName
   alert("התנתקת בהצלחה.");
-  window.location.href = "auth.html?action=login";
+  window.location.reload(); // מרענן את הדף כדי לעדכן את הכפתורים
 }
   </script>
     <script>
