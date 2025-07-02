@@ -190,6 +190,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+  <div id="welcomeMessage" style="text-align: center; padding: 20px; font-size: 22px; font-weight: bold;"></div>
 <div id="intro-screen" style="
   position: fixed;
   top: 0; left: 0;
@@ -461,5 +462,11 @@
   <button id="createWalletBtn">צור ארנק חדש</button>
   <button id="importWalletBtn">יש לי כבר ארנק</button>
 </div>
+    <script>
+  const userName = localStorage.getItem("userDisplayName");
+  if (userName) {
+    document.getElementById("welcomeMessage").innerText = `ברוך הבא, ${userName}!`;
+  }
+</script>
 </body>
 </html>
