@@ -1,169 +1,172 @@
-
 <!DOCTYPE html>
 <html lang="he">
 <head>
   <meta charset="UTF-8">
-  <title>CryptoAbuhay | הארנק שלי</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>הארנק שלי | CryptoAbuhay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
-      direction: rtl;
-      background-color: #0c0c1d;
-      color: white;
+      margin: 0;
       font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .top-bar {
+      background: #0c0c1d;
+      color: white;
+      direction: rtl;
       padding: 20px;
-      text-align: center;
-      background-color: #1f1f3b;
-      border-bottom: 1px solid #333;
     }
-    .top-bar h2 {
-      margin: 0;
+    .back-btn {
+      background: #222;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    h1 {
       font-size: 24px;
+      margin-bottom: 10px;
     }
     .balance {
-      text-align: center;
-      padding: 25px;
-    }
-    .balance h1 {
-      margin: 0;
-      font-size: 36px;
-    }
-    .balance p {
-      margin: 5px 0;
-      color: #ccc;
+      font-size: 20px;
+      margin: 10px 0 20px;
     }
     .actions {
       display: flex;
-      justify-content: space-around;
-      padding: 15px;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
     }
-    .action-btn {
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 20px;
-      border: none;
+    .actions button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
       font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .search-section {
-      padding: 20px;
-    }
-    .search-section input {
-      width: 100%;
-      padding: 10px;
       border-radius: 10px;
       border: none;
-      font-size: 16px;
-    }
-    .results {
-      padding: 0 20px;
-    }
-    .result-item {
+      cursor: pointer;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      color: white;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #333;
+      justify-content: center;
+      gap: 8px;
     }
-    .result-item img {
-      width: 24px;
-      height: 24px;
-      margin-left: 10px;
+    #searchInput {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 15px;
+      font-size: 16px;
     }
-    .tokens {
-      padding: 20px;
+    .token-info {
+      background: #1a1a2e;
+      padding: 15px;
+      border-radius: 10px;
+      display: none;
+      font-size: 16px;
+      line-height: 1.7;
     }
-    .token {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #333;
+    .token-info h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+    .token-info .positive {
+      color: #00ffae;
+    }
+    .token-info .negative {
+      color: #ff5c5c;
     }
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <h2>הארנק שלי</h2>
-    <div id="publicKeyDisplay">...</div>
-  </div>
 
+  <!-- 🔙 חזרה לדף הבית -->
+  <button class="back-btn" onclick="goHome()">חזרה לדף הבית</button>
+
+  <h1>הארנק שלי</h1>
   <div class="balance">
-    <h1 id="usdBalance">$0.00</h1>
-    <p id="solBalance">0 SOL</p>
+    יתרה כוללת: <span id="balanceAmount">$0.00</span> (<span id="solBalance">0 SOL</span>)
   </div>
 
+  <!-- 🔘 כפתורי פעולה -->
   <div class="actions">
-    <button class="action-btn">קבל</button>
-    <button class="action-btn">שלח</button>
-    <button class="action-btn">החלף</button>
-    <button class="action-btn">קנה</button>
+    <button><i class="fas fa-credit-card"></i> קנה</button>
+    <button><i class="fas fa-sync-alt"></i> מכור</button>
+    <button><i class="fas fa-paper-plane"></i> העבר</button>
+    <button><i class="fas fa-qrcode"></i> קבל</button>
   </div>
 
-  <div class="search-section">
-    <input type="text" id="searchInput" placeholder="חפש מטבע לרכישה...">
-  </div>
-  <div class="results" id="results"></div>
+  <!-- 🔍 שורת חיפוש -->
+  <input type="text" id="searchInput" placeholder="חפש מטבע (solana, bitcoin...)" oninput="searchToken(this.value)">
 
-  <div class="tokens">
-    <h3>מטבעות שרכשת:</h3>
-    <div id="tokenList">עדיין לא רכשת מטבעות</div>
+  <!-- 🧾 פרטי המטבע -->
+  <div class="token-info" id="tokenInfoBox">
+    <h2 id="tokenName"></h2>
+    <div id="tokenDetails"></div>
   </div>
 
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <script>
-    const publicKey = localStorage.getItem("wallet_publicKey");
-    const secretKey = JSON.parse(localStorage.getItem("wallet_secretKey") || "[]");
-
-    document.getElementById("publicKeyDisplay").innerText = publicKey || "לא נמצא";
-
-    if (publicKey && secretKey.length > 0) {
-      const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-      const pubKeyObj = new solanaWeb3.PublicKey(publicKey);
-
-      conn.getBalance(pubKeyObj).then(lamports => {
-        const sol = lamports / solanaWeb3.LAMPORTS_PER_SOL;
-        document.getElementById("solBalance").innerText = `${sol.toFixed(4)} SOL`;
-        document.getElementById("usdBalance").innerText = `$${(sol * 150).toFixed(2)}`;
-      });
+    function goHome() {
+      window.location.href = "index.html";
     }
 
-    document.getElementById("searchInput").addEventListener("input", async function() {
-      const query = this.value.toLowerCase();
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "טוען תוצאות...";
-
-      if (query.length < 2) {
-        resultsDiv.innerHTML = "";
+    async function searchToken(query) {
+      if (!query) {
+        document.getElementById("tokenInfoBox").style.display = "none";
         return;
       }
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${query.toLowerCase()}`);
+        const data = await res.json();
+
+        const name = data.name;
+        const symbol = data.symbol.toUpperCase();
+        const price = data.market_data.current_price.usd;
+        const change1h = data.market_data.price_change_percentage_1h_in_currency.usd;
+        const change24h = data.market_data.price_change_percentage_24h_in_currency.usd;
+        const change7d = data.market_data.price_change_percentage_7d_in_currency.usd;
+
+        const miniChart = "▁▂▃▄▅▆▇█".repeat(Math.floor(Math.random() * 2) + 1); // דמוי גרף אקראי קליל
+
+        document.getElementById("tokenName").innerText = `${name} (${symbol})`;
+        document.getElementById("tokenDetails").innerHTML = `
+          <strong>מחיר נוכחי:</strong> $${price}<br>
+          <strong>שינוי שעתי:</strong> <span class="${change1h >= 0 ? 'positive' : 'negative'}">${change1h.toFixed(2)}%</span><br>
+          <strong>שינוי יומי:</strong> <span class="${change24h >= 0 ? 'positive' : 'negative'}">${change24h.toFixed(2)}%</span><br>
+          <strong>שינוי שבועי:</strong> <span class="${change7d >= 0 ? 'positive' : 'negative'}">${change7d.toFixed(2)}%</span><br>
+          <strong>גרף מיני:</strong> <span style="font-family: monospace;">${miniChart}</span>
+        `;
+        document.getElementById("tokenInfoBox").style.display = "block";
+      } catch (e) {
+        document.getElementById("tokenName").innerText = "מטבע לא נמצא.";
+        document.getElementById("tokenDetails").innerText = "";
+        document.getElementById("tokenInfoBox").style.display = "block";
+      }
+    }
+
+    // טעינת יתרה מהארנק
+    window.onload = async () => {
+      const secret = localStorage.getItem("wallet_secretKey");
+      if (!secret) return;
 
       try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${query}`);
-        const data = await res.json();
-        resultsDiv.innerHTML = "";
-
-        data.coins.slice(0, 5).forEach(coin => {
-          const item = document.createElement("div");
-          item.className = "result-item";
-          item.innerHTML = `
-            <div>
-              <img src="${coin.thumb}" alt="${coin.name}">
-              ${coin.name}
-            </div>
-            <span>${coin.symbol.toUpperCase()}</span>
-          `;
-          resultsDiv.appendChild(item);
-        });
+        const secretKey = Uint8Array.from(JSON.parse(secret));
+        const keypair = solanaWeb3.Keypair.fromSecretKey(secretKey);
+        const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+        const balance = await conn.getBalance(keypair.publicKey);
+        const sol = balance / solanaWeb3.LAMPORTS_PER_SOL;
+        document.getElementById("solBalance").innerText = sol.toFixed(4) + " SOL";
+        document.getElementById("balanceAmount").innerText = "$" + (sol * 150).toFixed(2); // הערכת מחיר
       } catch (err) {
-        resultsDiv.innerHTML = "שגיאה בטעינה.";
+        console.error("שגיאה בטעינת הארנק:", err);
       }
-    });
+    };
   </script>
+
 </body>
 </html>
