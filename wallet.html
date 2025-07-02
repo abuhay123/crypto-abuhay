@@ -205,7 +205,8 @@
         return;
       }
       try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${query.toLowerCase()}`);
+        const id = query.trim().toLowerCase();
+const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`);
         const data = await res.json();
 
         const name = data.name;
