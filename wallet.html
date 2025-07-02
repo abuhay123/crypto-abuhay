@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <title>הארנק שלי | CryptoAbuhay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
     body {
       margin: 0;
@@ -15,8 +14,13 @@
       color: white;
       direction: rtl;
       padding: 20px;
+      transition: background 0.3s, color 0.3s;
     }
-    .back-btn {
+    body.light {
+      background: #f0f0f0;
+      color: #222;
+    }
+    .back-btn, .wallet-header button {
       background: #222;
       color: white;
       padding: 10px 20px;
@@ -24,24 +28,12 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      margin-bottom: 20px;
     }
     .wallet-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .wallet-header h1 {
-      font-size: 24px;
-    }
-    .wallet-header button {
-      background: #333;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
+      margin-bottom: 15px;
     }
     .popup {
       position: fixed;
@@ -93,7 +85,7 @@
     }
     .positive { color: #00ffae; }
     .negative { color: #ff5c5c; }
-    #searchInput, #addTokenForm input {
+    #searchInput, #newTokenId, #newTokenAmount {
       width: 100%;
       padding: 12px;
       border-radius: 10px;
@@ -101,15 +93,11 @@
       margin-bottom: 10px;
       font-size: 16px;
     }
-    .token-info, .token-list, #addTokenForm {
+    .token-info, .token-list, #addTokenForm, #trendingBox {
       background: #1a1a2e;
       padding: 15px;
       border-radius: 10px;
       margin-bottom: 20px;
-    }
-    .token-info h2 {
-      margin: 0 0 10px;
-      font-size: 20px;
     }
     .token-row {
       display: flex;
@@ -129,44 +117,42 @@
       margin-top: 15px;
       border-radius: 10px;
     }
+    .toggle-btn {
+      float: left;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .autocomplete-suggestions {
+      background: #222;
+      position: absolute;
+      z-index: 1000;
+      width: 95%;
+      max-height: 200px;
+      overflow-y: auto;
+      border-radius: 10px;
+      margin-top: -10px;
+    }
+    .autocomplete-suggestions div {
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      cursor: pointer;
+    }
+    .autocomplete-suggestions div:hover {
+      background: #333;
+    }
   </style>
 </head>
 <body>
 
-  <button class="back-btn" onclick="goHome()">חזרה לדף הבית</button>
-
   <div class="wallet-header">
-    <h1>הארנק שלי</h1>
+    <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-right"></i> חזרה</button>
     <button onclick="showAddress()">📋 כתובת ציבורית</button>
-  </div>
-    <!-- 🔍 שורת חיפוש -->
-  <input type="text" id="searchInput" placeholder="חפש מטבע (solana, bitcoin...)" oninput="searchToken(this.value)">
-
-  <!-- 🧾 פרטי המטבע -->
-  <div class="token-info" id="tokenInfoBox" style="display:none;">
-    <h2 id="tokenName"></h2>
-    <div id="tokenDetails"></div>
-    <iframe id="chartFrame" allowtransparency="true" scrolling="no" frameborder="0"></iframe>
-  </div>
-
-  <!-- ➕ טופס הוספת מטבע -->
-  <div id="addTokenForm">
-    <h3>➕ הוסף מטבע לרשימה</h3>
-    <input type="text" id="newTokenId" placeholder="coin ID (כמו solana)">
-    <input type="number" id="newTokenAmount" placeholder="כמות שנרכשה">
-    <button onclick="addToken()">הוסף</button>
-  </div>
-
-  <!-- 🪙 רשימת מטבעות שנרכשו -->
-  <div class="token-list" id="purchasedTokens">
-    <h3>📦 מטבעות שנרכשו</h3>
-    <!-- טוקנים יוזנו כאן -->
-  </div>
-
-  <!-- 🪪 פופאפ כתובת ציבורית -->
-  <div class="popup" id="addressPopup">
-    <div id="walletAddress">הכתובת שלך תופיע כאן</div>
-    <button onclick="copyAddress()">העתק</button>
+    <button class="toggle-btn" onclick="toggleTheme()">🌓 מצב</button>
   </div>
 
   <div class="balance">
@@ -179,119 +165,167 @@
     <button><i class="fas fa-paper-plane"></i> העבר</button>
     <button><i class="fas fa-qrcode"></i> קבל</button>
   </div>
-    <script>
-    function goHome() {
-      window.location.href = "index.html";
+
+  <input type="text" id="searchInput" placeholder="חפש מטבע (solana, bitcoin...)" oninput="searchToken(this.value)">
+  <div class="autocomplete-suggestions" id="autocomplete"></div>
+
+  <div class="token-info" id="tokenInfoBox" style="display:none;">
+    <h2 id="tokenName"></h2>
+    <div id="tokenDetails"></div>
+    <iframe id="chartFrame"></iframe>
+  </div>
+
+  <div id="trendingBox">
+    <h3>🔥 מטבעות חמים</h3>
+    <div id="trendingList">טוען...</div>
+  </div>
+
+  <div id="addTokenForm">
+    <h3>➕ הוסף מטבע לרשימה</h3>
+    <input type="text" id="newTokenId" placeholder="coin ID (כמו solana)">
+    <input type="number" id="newTokenAmount" placeholder="כמות שנרכשה">
+    <button onclick="addToken()">הוסף</button>
+  </div>
+
+  <div class="token-list" id="purchasedTokens">
+    <h3>📦 מטבעות שנרכשו</h3>
+  </div>
+
+  <div class="popup" id="addressPopup">
+    <div id="walletAddress">הכתובת שלך תופיע כאן</div>
+    <button onclick="copyAddress()">העתק</button>
+  </div>
+
+<script>
+function goHome() {
+  window.location.href = "index.html";
+}
+function showAddress() {
+  const pubKey = localStorage.getItem("wallet_publicKey");
+  document.getElementById("walletAddress").innerText = pubKey || "לא נמצא";
+  document.getElementById("addressPopup").style.display = "block";
+  setTimeout(() => {
+    document.getElementById("addressPopup").style.display = "none";
+  }, 5000);
+}
+function copyAddress() {
+  const address = document.getElementById("walletAddress").innerText;
+  navigator.clipboard.writeText(address);
+  alert("כתובת הועתקה!");
+}
+function toggleTheme() {
+  const body = document.body;
+  body.classList.toggle("light");
+  localStorage.setItem("theme", body.classList.contains("light") ? "light" : "dark");
+}
+function restoreTheme() {
+  const theme = localStorage.getItem("theme");
+  if (theme === "light") document.body.classList.add("light");
+}
+async function searchToken(query) {
+  if (!query) {
+    document.getElementById("tokenInfoBox").style.display = "none";
+    document.getElementById("autocomplete").innerHTML = '';
+    return;
+  }
+  try {
+    const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${query}`);
+    const results = await res.json();
+    const suggestions = results.coins.slice(0, 5).map(c => `<div onclick="selectToken('${c.id}')">${c.name} (${c.symbol.toUpperCase()})</div>`).join('');
+    document.getElementById("autocomplete").innerHTML = suggestions;
+  } catch {
+    document.getElementById("autocomplete").innerHTML = '';
+  }
+}
+async function selectToken(id) {
+  document.getElementById("searchInput").value = id;
+  document.getElementById("autocomplete").innerHTML = '';
+  try {
+    const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`);
+    const data = await res.json();
+    const name = data.name;
+    const symbol = data.symbol.toUpperCase();
+    const price = data.market_data.current_price.usd;
+    const change1h = data.market_data.price_change_percentage_1h_in_currency.usd;
+    const change24h = data.market_data.price_change_percentage_24h_in_currency.usd;
+    const change7d = data.market_data.price_change_percentage_7d_in_currency.usd;
+    document.getElementById("tokenName").innerText = `${name} (${symbol})`;
+    document.getElementById("tokenDetails").innerHTML = `
+      <strong>מחיר נוכחי:</strong> $${price}<br>
+      <strong>שינוי שעתי:</strong> <span class="${change1h >= 0 ? 'positive' : 'negative'}">${change1h.toFixed(2)}%</span><br>
+      <strong>שינוי יומי:</strong> <span class="${change24h >= 0 ? 'positive' : 'negative'}">${change24h.toFixed(2)}%</span><br>
+      <strong>שינוי שבועי:</strong> <span class="${change7d >= 0 ? 'positive' : 'negative'}">${change7d.toFixed(2)}%</span>
+    `;
+    document.getElementById("chartFrame").src = `https://s.tradingview.com/embed-widget/mini-symbol-overview/?locale=en#{"symbol":"COINBASE:${symbol}USD","dateRange":"7D","colorTheme":"dark","isTransparent":true}`;
+    document.getElementById("tokenInfoBox").style.display = "block";
+  } catch {
+    document.getElementById("tokenName").innerText = "מטבע לא נמצא.";
+    document.getElementById("tokenDetails").innerText = "";
+    document.getElementById("tokenInfoBox").style.display = "block";
+  }
+}
+function loadPurchasedTokens() {
+  const list = JSON.parse(localStorage.getItem("purchasedTokens") || "[]");
+  const container = document.getElementById("purchasedTokens");
+  container.innerHTML = '<h3>📦 מטבעות שנרכשו</h3>';
+  list.forEach(async token => {
+    try {
+      const res = await fetch(`https://api.coingecko.com/api/v3/coins/${token.id}`);
+      const data = await res.json();
+      const price = data.market_data.current_price.usd;
+      const change = data.market_data.price_change_percentage_24h.toFixed(2);
+      const logo = data.image.thumb;
+      const name = data.name;
+      container.innerHTML += `
+        <div class="token-row">
+          <div><img src="${logo}"> ${name} (${token.amount})</div>
+          <div>$${(price * token.amount).toFixed(2)} (${change}%)</div>
+        </div>
+      `;
+    } catch {
+      container.innerHTML += `<div class="token-row">${token.id} - שגיאה בטעינה</div>`;
     }
-
-    function showAddress() {
-      const pubKey = localStorage.getItem("wallet_publicKey");
-      document.getElementById("walletAddress").innerText = pubKey || "לא נמצא";
-      document.getElementById("addressPopup").style.display = "block";
-      setTimeout(() => {
-        document.getElementById("addressPopup").style.display = "none";
-      }, 5000);
-    }
-
-    function copyAddress() {
-      const address = document.getElementById("walletAddress").innerText;
-      navigator.clipboard.writeText(address);
-      alert("כתובת הועתקה!");
-    }
-
-    async function searchToken(query) {
-      if (!query) {
-        document.getElementById("tokenInfoBox").style.display = "none";
-        return;
-      }
-      try {
-        const id = query.trim().toLowerCase();
-const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`);
-        const data = await res.json();
-
-        const name = data.name;
-        const symbol = data.symbol.toUpperCase();
-        const price = data.market_data.current_price.usd;
-        const change1h = data.market_data.price_change_percentage_1h_in_currency.usd;
-        const change24h = data.market_data.price_change_percentage_24h_in_currency.usd;
-        const change7d = data.market_data.price_change_percentage_7d_in_currency.usd;
-
-        document.getElementById("tokenName").innerText = `${name} (${symbol})`;
-        document.getElementById("tokenDetails").innerHTML = `
-          <strong>מחיר נוכחי:</strong> $${price}<br>
-          <strong>שינוי שעתי:</strong> <span class="${change1h >= 0 ? 'positive' : 'negative'}">${change1h.toFixed(2)}%</span><br>
-          <strong>שינוי יומי:</strong> <span class="${change24h >= 0 ? 'positive' : 'negative'}">${change24h.toFixed(2)}%</span><br>
-          <strong>שינוי שבועי:</strong> <span class="${change7d >= 0 ? 'positive' : 'negative'}">${change7d.toFixed(2)}%</span>
-        `;
-
-        // עדכון גרף אמיתי
-        const chartSymbol = symbol === "SOL" ? "BINANCE:SOLUSDT" : `COINBASE:${symbol}USD`;
-        const iframe = document.getElementById("chartFrame");
-        iframe.src = `https://s.tradingview.com/embed-widget/mini-symbol-overview/?locale=en#{"symbol":"${chartSymbol}","width":"100%","height":"300","dateRange":"7D","colorTheme":"dark","isTransparent":true}`;
-
-        document.getElementById("tokenInfoBox").style.display = "block";
-      } catch (e) {
-        document.getElementById("tokenName").innerText = "מטבע לא נמצא.";
-        document.getElementById("tokenDetails").innerText = "";
-        document.getElementById("tokenInfoBox").style.display = "block";
-        document.getElementById("chartFrame").src = "";
-      }
-    }
-
-    function loadPurchasedTokens() {
-      const list = JSON.parse(localStorage.getItem("purchasedTokens") || "[]");
-      const container = document.getElementById("purchasedTokens");
-      container.innerHTML = '<h3>📦 מטבעות שנרכשו</h3>';
-      list.forEach(async token => {
-        try {
-          const res = await fetch(`https://api.coingecko.com/api/v3/coins/${token.id}`);
-          const data = await res.json();
-          const price = data.market_data.current_price.usd;
-          const change = data.market_data.price_change_percentage_24h.toFixed(2);
-          const logo = data.image.thumb;
-          const name = data.name;
-          container.innerHTML += `
-            <div class="token-row">
-              <div><img src="${logo}"> ${name} (${token.amount})</div>
-              <div>$${(price * token.amount).toFixed(2)} (${change}%)</div>
-            </div>
-          `;
-        } catch (e) {
-          container.innerHTML += `<div class="token-row">${token.id} - שגיאה בטעינה</div>`;
-        }
-      });
-    }
-
-    function addToken() {
-      const id = document.getElementById("newTokenId").value.trim().toLowerCase();
-      const amount = parseFloat(document.getElementById("newTokenAmount").value);
-      if (!id || isNaN(amount)) return alert("נא למלא מזהה מטבע וכמות");
-
-      const tokens = JSON.parse(localStorage.getItem("purchasedTokens") || "[]");
-      tokens.push({ id, amount });
-      localStorage.setItem("purchasedTokens", JSON.stringify(tokens));
-      document.getElementById("newTokenId").value = '';
-      document.getElementById("newTokenAmount").value = '';
-      loadPurchasedTokens();
-    }
-
-    window.onload = async () => {
-      const secret = localStorage.getItem("wallet_secretKey");
-      if (!secret) return;
-      try {
-        const secretKey = Uint8Array.from(JSON.parse(secret));
-        const keypair = solanaWeb3.Keypair.fromSecretKey(secretKey);
-        const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
-        const balance = await conn.getBalance(keypair.publicKey);
-        const sol = balance / solanaWeb3.LAMPORTS_PER_SOL;
-        document.getElementById("solBalance").innerText = sol.toFixed(4) + " SOL";
-        document.getElementById("balanceAmount").innerText = "$" + (sol * 150).toFixed(2);
-      } catch (err) {
-        console.error("שגיאה בקריאת הארנק:", err);
-      }
-      loadPurchasedTokens();
-    };
-  </script>
-
+  });
+}
+function addToken() {
+  const id = document.getElementById("newTokenId").value.trim().toLowerCase();
+  const amount = parseFloat(document.getElementById("newTokenAmount").value);
+  if (!id || isNaN(amount)) return alert("נא למלא מזהה מטבע וכמות");
+  const tokens = JSON.parse(localStorage.getItem("purchasedTokens") || "[]");
+  tokens.push({ id, amount });
+  localStorage.setItem("purchasedTokens", JSON.stringify(tokens));
+  document.getElementById("newTokenId").value = '';
+  document.getElementById("newTokenAmount").value = '';
+  loadPurchasedTokens();
+}
+async function loadTrending() {
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
+    const data = await res.json();
+    const box = document.getElementById("trendingList");
+    box.innerHTML = data.coins.map(c => `<div onclick="selectToken('${c.item.id}')">${c.item.name} (${c.item.symbol})</div>`).join('');
+  } catch {
+    document.getElementById("trendingList").innerText = "שגיאה בטעינה.";
+  }
+}
+window.onload = async () => {
+  restoreTheme();
+  const secret = localStorage.getItem("wallet_secretKey");
+  if (!secret) return;
+  try {
+    const secretKey = Uint8Array.from(JSON.parse(secret));
+    const keypair = solanaWeb3.Keypair.fromSecretKey(secretKey);
+    const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+    const balance = await conn.getBalance(keypair.publicKey);
+    const sol = balance / solanaWeb3.LAMPORTS_PER_SOL;
+    document.getElementById("solBalance").innerText = sol.toFixed(4) + " SOL";
+    document.getElementById("balanceAmount").innerText = "$" + (sol * 150).toFixed(2);
+  } catch (err) {
+    console.error("שגיאה בקריאת הארנק:", err);
+  }
+  loadPurchasedTokens();
+  loadTrending();
+};
+</script>
 </body>
 </html>
