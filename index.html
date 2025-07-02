@@ -356,12 +356,17 @@
 }
 
     async function createWallet() {
-      const keypair = solanaWeb3.Keypair.generate();
-      const publicKey = keypair.publicKey.toBase58();
-      const secretKey = Array.from(keypair.secretKey);
-      alert("ארנק נוצר!\n\nכתובת ציבורית:\n" + publicKey);
-      console.log("מפתח פרטי:", secretKey);
-    }
+  const keypair = solanaWeb3.Keypair.generate();
+  const publicKey = keypair.publicKey.toBase58();
+  const secretKey = Array.from(keypair.secretKey);
+
+  // שמירת הארנק בלוקאל סטורג'
+  localStorage.setItem("wallet_publicKey", publicKey);
+  localStorage.setItem("wallet_secretKey", JSON.stringify(secretKey));
+
+  // מעבר לדף wallet.html
+  window.location.href = "https://yakovabuhay.github.io/cryptoabuhay/wallet.html";
+}
 
     function toggleImport() {
       const section = document.getElementById('import-section');
