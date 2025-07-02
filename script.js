@@ -51,3 +51,20 @@ function toggleSidebar() {
     window.location.href = "wallet.html";
   });
 </script>
+function showPublicKey() {
+  const pubKey = localStorage.getItem("publicKey") || "לא נמצא";
+  document.getElementById("publicKeyDisplay").innerText = pubKey;
+}
+
+function showPrivateKey() {
+  const privKey = localStorage.getItem("privateKey") || "לא נמצא";
+  document.getElementById("privateKeyDisplay").innerText = privKey;
+}
+
+function openWhatsApp() {
+  window.open("https://wa.me/972501234567", "_blank");
+}
+
+function changePassword() {
+  alert("קישור לשינוי סיסמה נשלח למייל (דמו)");
+}
