@@ -35,14 +35,17 @@ window.register = async function () {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
-    msg.innerText = "נרשמת בהצלחה, נא אמת את המייל.";
-    msg.classList.add("success");
-    msg.classList.remove("error");
-    msg.style.display = "block";
 
-    // שמור נתוני faceID
+    // שמירת שם המשתמש (אם קיים) או לפי כתובת המייל
+    const displayName = username || email.split("@")[0];
+    localStorage.setItem("userDisplayName", displayName);
+
+    // נתוני Face ID
     localStorage.setItem("faceid_email", email);
     localStorage.setItem("faceid_password", password);
+
+    // מעבר לעמוד תודה
+    window.location.href = "thankyou.html";
 
   } catch (error) {
     msg.innerText = error.message;
@@ -51,7 +54,6 @@ window.register = async function () {
     msg.style.display = "block";
   }
 };
-
 // 🟦 פונקציית התחברות
 window.login = async function () {
   const email = document.getElementById("loginEmail").value;
@@ -60,15 +62,23 @@ window.login = async function () {
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
     msg.innerText = "ברוך הבא!";
     msg.classList.add("success");
     msg.classList.remove("error");
     msg.style.display = "block";
+
+    // שמירת שם המשתמש
+    const displayName = email.split("@")[0];
+    localStorage.setItem("userDisplayName", displayName);
     localStorage.setItem("user", JSON.stringify(userCredential.user));
 
-    // שמור נתוני faceID
+    // נתוני Face ID
     localStorage.setItem("faceid_email", email);
     localStorage.setItem("faceid_password", password);
+
+    // מעבר לדף הבית
+    window.location.href = "index.html";
 
   } catch (error) {
     msg.innerText = error.message;
@@ -77,7 +87,6 @@ window.login = async function () {
     msg.style.display = "block";
   }
 };
-
 // 🟨 התחברות עם Google
 window.googleLogin = async function () {
   try {
