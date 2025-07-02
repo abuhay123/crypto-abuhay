@@ -234,6 +234,78 @@
     <div class="setting-item" onclick="toggleSidebar()"><i class="fas fa-times"></i> סגור</div>
     <div class="setting-row">
   <label>יציאה מהמערכת</label>
+      <!-- === בלוקים פונקציונליים אמיתיים של ההגדרות === -->
+
+<!-- ✅ ניהול חשבונות -->
+<div id="accounts" class="setting-section">
+  <h2>ניהול חשבונות</h2>
+  <p><strong>שם משתמש:</strong> <span id="userName">לא מחובר</span></p>
+  <p><strong>אימייל:</strong> <span id="userEmail">לא מחובר</span></p>
+  <button onclick="changePassword()">שנה סיסמה</button>
+</div>
+
+<!-- ✅ העדפות -->
+<div id="preferences" class="setting-section">
+  <h2>העדפות</h2>
+  <label>שפה:
+    <select onchange="toggleLanguage(this)">
+      <option value="he">עברית</option>
+      <option value="en">English</option>
+    </select>
+  </label>
+</div>
+
+<!-- ✅ אבטחה ופרטיות -->
+<div id="privacy" class="setting-section">
+  <h2>אבטחה ופרטיות</h2>
+  <p>מפתח ציבורי: <span id="publicKeyDisplay">...</span></p>
+  <p>מפתח פרטי: <span id="privateKeyDisplay">...</span></p>
+  <button onclick="showPublicKey()">הצג מפתח ציבורי</button>
+  <button onclick="showPrivateKey()">הצג מפתח פרטי</button>
+</div>
+
+<!-- ✅ רשתות פעילות -->
+<div id="networks" class="setting-section">
+  <h2>רשתות פעילות</h2>
+  <p>Solana Mainnet</p>
+</div>
+
+<!-- ✅ ספר כתובות -->
+<div id="addressBook" class="setting-section">
+  <h2>ספר כתובות</h2>
+  <p>אין אנשי קשר כרגע.</p>
+</div>
+
+<!-- ✅ אפליקציות מחוברות -->
+<div id="apps" class="setting-section">
+  <h2>אפליקציות מחוברות</h2>
+  <p>אין אפליקציות מחוברות כרגע.</p>
+</div>
+
+<!-- ✅ הגדרות מפתחים -->
+<div id="developer" class="setting-section">
+  <h2>הגדרות מפתחים</h2>
+  <p>פתח את קונסול הדפדפן לצפייה בלוגים.</p>
+</div>
+
+<!-- ✅ עזרה ותמיכה -->
+<div id="support" class="setting-section">
+  <h2>עזרה ותמיכה</h2>
+  <p>זקוק לעזרה? שלח לנו הודעה בוואטסאפ:</p>
+  <button onclick="openWhatsApp()">פתח וואטסאפ</button>
+</div>
+
+<!-- ✅ הזמן חברים -->
+<div id="invite" class="setting-section">
+  <h2>הזמן חברים</h2>
+  <input type="text" value="https://cryptoabuhay.com" readonly style="width:100%">
+</div>
+
+<!-- ✅ אודות -->
+<div id="about" class="setting-section">
+  <h2>אודות</h2>
+  <p>אפליקציית CryptoAbuhay נוצרה על ידי יעקב אבוהי, יזם צעיר שחי ונושם חדשנות וטכנולוגיה. מטרתה של האפליקציה היא להנגיש את עולם הקריפטו לכל אחד בצורה פשוטה, מאובטחת ומתקדמת.</p>
+</div>
   <button class="btn btn-secondary" onclick="logout()">התנתקות</button>
 </div>
   </div>
