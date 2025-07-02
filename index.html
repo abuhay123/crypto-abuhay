@@ -461,6 +461,17 @@
   window.location.reload(); // מרענן את הדף כדי לעדכן את הכפתורים
 }
   </script>
+  <script>
+function toggleImport() {
+  const publicKey = localStorage.getItem("wallet_publicKey");
+  if (publicKey) {
+    window.location.href = "wallet.html";
+  } else {
+    const section = document.getElementById('import-section');
+    section.style.display = section.style.display === 'none' ? 'block' : 'none';
+  }
+}
+</script>
     <script>
   setTimeout(() => {
     document.getElementById("intro-screen").style.display = "none";
