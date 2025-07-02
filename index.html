@@ -241,13 +241,17 @@
 
   <div class="container" id="home">
     <!-- כפתורי הרשמה והתחברות בעיצוב זהה לכפתור צור ארנק -->
-<div style="margin-top: 20px;">
+<!-- בלוק כפתורי הרשמה/התחברות -->
+<div id="authButtons" style="margin-top: 20px;">
   <a href="auth.html?action=signup" class="btn btn-primary">הרשמה</a>
-<a href="auth.html?action=login" class="btn btn-primary">התחברות</a>
-    <h1>השער שלך ל-Solana</h1>
-    <p>נהל את נכסי ה-Solana שלך בצורה מאובטחת.</p>
-    <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
-    <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
+  <a href="auth.html?action=login" class="btn btn-primary">התחברות</a>
+</div>
+
+<!-- בלוק כפתורי ארנק -->
+<div id="walletActionButtons" style="display: none; margin-top: 20px;">
+  <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
+  <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
+</div>
 <div class="container" id="accounts"><h2>ניהול חשבונות</h2><p>בחר, הוסף או מחק חשבונות ארנק.</p></div>
 <div class="container" id="preferences"><h2>העדפות</h2><p>בחר ערכת נושא, שפה, או תצורה מועדפת.</p></div>
 <div class="container" id="privacy"><h2>אבטחה ופרטיות</h2><p>הפעל אימות, נעל את הארנק, מחק נתונים רגישים.</p></div>
@@ -467,6 +471,22 @@
   if (userName) {
     document.getElementById("welcomeMessage").innerText = `ברוך הבא, ${userName}!`;
   }
+</script>
+  <script>
+  // שליטה על נראות הכפתורים לפי מצב התחברות
+  document.addEventListener("DOMContentLoaded", () => {
+    const isLoggedIn = localStorage.getItem("userDisplayName");
+    const authButtons = document.getElementById("authButtons");
+    const walletButtons = document.getElementById("walletActionButtons");
+
+    if (isLoggedIn) {
+      if (authButtons) authButtons.style.display = "none";
+      if (walletButtons) walletButtons.style.display = "block";
+    } else {
+      if (authButtons) authButtons.style.display = "block";
+      if (walletButtons) walletButtons.style.display = "none";
+    }
+  });
 </script>
 </body>
 </html>
