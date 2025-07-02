@@ -10,7 +10,7 @@ import {
   GoogleAuthProvider
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-// ✅ זה הקונפיג הנכון
+// ✅ קונפיג Firebase שלך
 const firebaseConfig = {
   apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
   authDomain: "crypto-abuhay.firebaseapp.com",
@@ -25,59 +25,72 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 🟩 הרשמה
+// 🟩 פונקציית הרשמה
 window.register = async function () {
   const email = document.getElementById("registerEmail").value;
   const password = document.getElementById("registerPassword").value;
   const username = document.getElementById("registerUsername").value;
+  const msg = document.getElementById("registerMessage");
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
-    document.getElementById("registerMessage").innerText = "נרשמת בהצלחה, נא אמת את המייל.";
-    document.getElementById("registerMessage").classList.add("success");
-    document.getElementById("registerMessage").style.display = "block";
+    msg.innerText = "נרשמת בהצלחה, נא אמת את המייל.";
+    msg.classList.add("success");
+    msg.classList.remove("error");
+    msg.style.display = "block";
+
+    // שמור נתוני faceID
+    localStorage.setItem("faceid_email", email);
+    localStorage.setItem("faceid_password", password);
+
   } catch (error) {
-    document.getElementById("registerMessage").innerText = error.message;
-    document.getElementById("registerMessage").classList.add("error");
-    document.getElementById("registerMessage").style.display = "block";
+    msg.innerText = error.message;
+    msg.classList.add("error");
+    msg.classList.remove("success");
+    msg.style.display = "block";
   }
 };
 
-// 🟦 התחברות
+// 🟦 פונקציית התחברות
 window.login = async function () {
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
+  const msg = document.getElementById("loginMessage");
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    document.getElementById("loginMessage").innerText = "ברוך הבא!";
-    document.getElementById("loginMessage").classList.add("success");
-    document.getElementById("loginMessage").style.display = "block";
+    msg.innerText = "ברוך הבא!";
+    msg.classList.add("success");
+    msg.classList.remove("error");
+    msg.style.display = "block";
     localStorage.setItem("user", JSON.stringify(userCredential.user));
+
+    // שמור נתוני faceID
+    localStorage.setItem("faceid_email", email);
+    localStorage.setItem("faceid_password", password);
+
   } catch (error) {
-    document.getElementById("loginMessage").innerText = error.message;
-    document.getElementById("loginMessage").classList.add("error");
-    document.getElementById("loginMessage").style.display = "block";
+    msg.innerText = error.message;
+    msg.classList.add("error");
+    msg.classList.remove("success");
+    msg.style.display = "block";
   }
 };
 
-// 🟨 התחברות עם גוגל
+// 🟨 התחברות עם Google
 window.googleLogin = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     alert("התחברת עם גוגל בהצלחה, שלום " + user.displayName);
+    localStorage.setItem("user", JSON.stringify(user));
   } catch (error) {
     alert("שגיאה בגוגל: " + error.message);
   }
 };
-import {
-  getAuth,
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-// פונקציית התחברות עם Face ID
+// 🟧 התחברות עם Face ID
 window.addEventListener("DOMContentLoaded", () => {
   const faceIdBtn = document.getElementById("faceIdLoginBtn");
   if (faceIdBtn) {
@@ -91,12 +104,10 @@ window.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        // הצלחה בזיהוי ביומטרי
         const savedEmail = localStorage.getItem("faceid_email");
         const savedPassword = localStorage.getItem("faceid_password");
 
         if (savedEmail && savedPassword) {
-          const auth = getAuth();
           await signInWithEmailAndPassword(auth, savedEmail, savedPassword);
           alert("התחברת בהצלחה עם Face ID ✅");
           window.location.href = "home.html";
