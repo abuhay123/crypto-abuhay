@@ -3,101 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <title>הגדרות | CryptoAbuhay</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="settings.js" defer></script>
-  <link rel="icon" href="icon.png">
   <style>
     body {
+      font-family: Arial, sans-serif;
       background: #0c0c1d;
       color: white;
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 20px;
       direction: rtl;
+      padding: 20px;
+    }
+    .container {
+      margin-bottom: 30px;
+      background: #1c1c2a;
+      padding: 20px;
+      border-radius: 10px;
     }
     h2 {
-      text-align: center;
-      margin-bottom: 30px;
+      color: #4fd1c5;
     }
-    .settings-section {
-      background: #181830;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-    .settings-section h3 {
-      margin: 0 0 10px;
-      font-size: 18px;
-      border-bottom: 1px solid #333;
-      padding-bottom: 5px;
-    }
-    .info-line {
-      margin: 5px 0;
-      font-size: 15px;
-    }
-    button {
+    .btn {
       background: #4f46e5;
-      color: white;
       border: none;
+      color: white;
       padding: 10px 20px;
       margin-top: 10px;
       border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
+    }
+    pre {
+      background: #222;
+      padding: 10px;
+      border-radius: 6px;
+      direction: ltr;
     }
   </style>
 </head>
 <body>
-  <h2>הגדרות</h2>
 
-  <div class="settings-section" id="accountSection">
-    <h3>ניהול חשבון</h3>
-    <div class="info-line">מייל: <span id="userEmail">—</span></div>
-    <div class="info-line">שם משתמש: <span id="userName">—</span></div>
-    <button onclick="changePassword()">החלפת סיסמה</button>
+  <h1>🔧 הגדרות</h1>
+
+  <div class="container" id="accounts">
+    <h2>ניהול חשבון</h2>
+    <p>📧 אימייל: <span id="userEmail">--</span></p>
+    <p>👤 שם משתמש: <span id="userDisplayName">--</span></p>
+    <button onclick="changePassword()" class="btn">שנה סיסמה</button>
   </div>
 
-  <div class="settings-section">
-    <h3>אבטחה ופרטיות</h3>
-    <div class="info-line">🔐 מפתח פרטי:</div>
-    <div class="info-line" id="privateKeyDisplay">—</div>
+  <div class="container" id="privacy">
+    <h2>אבטחה ופרטיות</h2>
+    <p>🔑 המפתח הפרטי שלך:</p>
+    <pre id="privateKeyDisplay">--</pre>
   </div>
 
-  <div class="settings-section">
-    <h3>רשתות פעילות</h3>
-    <div class="info-line">🌐 מחובר לרשת: Solana Mainnet</div>
+  <div class="container" id="active-networks">
+    <h2>רשת פעילה</h2>
+    <p>🌐 Mainnet Beta - Solana</p>
   </div>
 
-  <div class="settings-section">
-    <h3>ספר כתובות</h3>
-    <div class="info-line">אין כרגע כתובות שמורות.</div>
+  <div class="container" id="connected-apps">
+    <h2>אפליקציות מחוברות</h2>
+    <p>אין אפליקציות מחוברות כרגע.</p>
   </div>
 
-  <div class="settings-section">
-    <h3>אפליקציות מחוברות</h3>
-    <div class="info-line">אין אפליקציות מחוברות.</div>
+  <div class="container" id="support">
+    <h2>עזרה ותמיכה</h2>
+    <button onclick="openWhatsApp()" class="btn">צור קשר בוואטסאפ</button>
   </div>
 
-  <div class="settings-section">
-    <h3>הגדרות מפתחים</h3>
-    <button onclick="localStorage.clear(); alert('כל ההגדרות נוקו.'); location.reload();">ניקוי נתונים</button>
+  <div class="container" id="about">
+    <h2>אודות</h2>
+    <p>CryptoAbuhay היא אפליקציית קריפטו אמיתית שנבנתה על ידי <strong>יעקב אבוהי</strong> — יזם צעיר עם חזון. האפליקציה מאפשרת יצירת ארנקים אמיתיים, רכישת מטבעות, ניהול טוקנים, הצגת גרפים וסטטיסטיקות בזמן אמת, חיבור ל־Solana Mainnet, ממשק כהה חדשני ועוד.</p>
+    <p>יעקב אבוהי הקים את האפליקציה מתוך מטרה להנגיש קריפטו לכולם — בצורה מקצועית, מהירה ופשוטה.</p>
   </div>
 
-  <div class="settings-section">
-    <h3>עזרה ותמיכה</h3>
-    <button onclick="window.open('https://wa.me/972501234567','_blank')">שלח הודעה בוואטסאפ</button>
-  </div>
+  <script>
+    // שליפת פרטי המשתמש
+    document.getElementById("userEmail").innerText = localStorage.getItem("user") || "לא מחובר";
+    document.getElementById("userDisplayName").innerText = localStorage.getItem("userDisplayName") || "שם לא זמין";
 
-  <div class="settings-section">
-    <h3>הזמן חברים</h3>
-    <button onclick="navigator.share ? navigator.share({title:'CryptoAbuhay', text:'הצטרף לאפליקציה!', url:window.location.href}) : alert('אין תמיכה בדפדפן')">שיתוף</button>
-  </div>
+    // הצגת Private Key
+    const privateKey = localStorage.getItem("wallet_secretKey");
+    if (privateKey) {
+      document.getElementById("privateKeyDisplay").innerText = JSON.parse(privateKey);
+    }
 
-  <div class="settings-section">
-    <h3>אודות</h3>
-    <p>יעקב אבוהי – יזם צעיר שפיתח את CryptoAbuhay מתוך חזון לעולם קריפטו נגיש, אמיתי ומקצועי.<br>
-    האפליקציה משלבת טכנולוגיות מתקדמות, חיבור ישיר לרשת Solana, ואפשרות לניהול מלא של ארנק דיגיטלי מהנייד – בקלות ובאחריות.</p>
-  </div>
+    // החלפת סיסמה (הנחיה)
+    function changePassword() {
+      alert("כדי לשנות סיסמה, התחבר מחדש דרך Firebase או צור קשר עם התמיכה.");
+    }
+
+    // וואטסאפ תמיכה
+    function openWhatsApp() {
+      const phone = "972549665726";
+      const message = "שלום, יש לי שאלה לגבי CryptoAbuhay";
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    }
+  </script>
 </body>
 </html>
