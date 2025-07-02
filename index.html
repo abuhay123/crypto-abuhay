@@ -504,5 +504,44 @@ function toggleImport() {
     }
   });
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const auth = firebase.auth();
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      const email = user.email || "לא זמין";
+      const name = user.displayName || "לא מוגדר";
+      const emailEl = document.getElementById("userEmail");
+      const nameEl = document.getElementById("userName");
+      if (emailEl) emailEl.innerText = email;
+      if (nameEl) nameEl.innerText = name;
+    }
+  });
+});
+
+function changePassword() {
+  const auth = firebase.auth();
+  const user = auth.currentUser;
+  if (user) {
+    auth.sendPasswordResetEmail(user.email).then(() => {
+      alert("קישור לאיפוס סיסמה נשלח למייל.");
+    }).catch((error) => {
+      alert("שגיאה: " + error.message);
+    });
+  } else {
+    alert("לא מחובר");
+  }
+}
+
+function showPrivateKey() {
+  const key = localStorage.getItem("wallet_secretKey");
+  document.getElementById("privateKeyDisplay").innerText = key || "לא נמצא";
+}
+
+function showPublicKey() {
+  const key = localStorage.getItem("wallet_publicKey");
+  document.getElementById("publicKeyDisplay").innerText = key || "לא נמצא";
+}
+</script>
 </body>
 </html>
