@@ -120,3 +120,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+function showWalletButtons() {
+  try {
+    const mainWindow = window.opener || window;
+    const walletButtons = mainWindow.document.getElementById("walletButtons");
+    if (walletButtons) {
+      walletButtons.style.display = "block";
+    }
+  } catch (e) {
+    console.warn("לא ניתן להציג כפתורי ארנק:", e);
+  }
+}
