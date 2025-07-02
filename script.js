@@ -46,3 +46,8 @@ function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.toggle("active");
 }
+<script>
+  document.getElementById("createWalletBtn").addEventListener("click", function() {
+    window.location.href = "wallet.html";
+  });
+</script>
