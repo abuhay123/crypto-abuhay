@@ -1,5 +1,6 @@
 let currentLang = "he";
 
+// החלפת מצב כהה/בהיר
 function toggleTheme(elem) {
   if (elem.checked) {
     document.body.style.background = '#f5f5f5';
@@ -10,6 +11,7 @@ function toggleTheme(elem) {
   }
 }
 
+// החלפת שפה
 function toggleLanguage(elem) {
   const newLang = elem.checked ? "en" : "he";
   setLanguage(newLang);
@@ -18,6 +20,7 @@ function toggleLanguage(elem) {
 function setLanguage(lang) {
   currentLang = lang;
   const d = langData[lang];
+  if (!d) return;
   document.querySelector("h1").innerText = d.title;
   document.querySelector("p").innerText = d.description;
   document.querySelector(".btn-primary").innerText = d.createWallet;
@@ -32,39 +35,77 @@ function setLanguage(lang) {
   document.querySelectorAll(".switch-label")[1].innerText = d.langSwitch;
 }
 
-function openWhatsApp() {
-  const phone = "972549665726";
-  const message = "שלום, רציתי לשאול על...";
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  window.open(url, '_blank');
-}
-
 window.onload = () => {
   setLanguage("he");
 };
+
+// תפריט צד
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.toggle("active");
 }
-<script>
-  document.getElementById("createWalletBtn").addEventListener("click", function() {
-    window.location.href = "wallet.html";
-  });
-</script>
+
+// הצגת מפתח ציבורי ופרטי
 function showPublicKey() {
   const pubKey = localStorage.getItem("publicKey") || "לא נמצא";
   document.getElementById("publicKeyDisplay").innerText = pubKey;
 }
-
 function showPrivateKey() {
   const privKey = localStorage.getItem("privateKey") || "לא נמצא";
   document.getElementById("privateKeyDisplay").innerText = privKey;
 }
 
-function openWhatsApp() {
-  window.open("https://wa.me/972501234567", "_blank");
+// שינוי סיסמה אמיתי
+function changePassword() {
+  const auth = firebase.auth();
+  const user = auth.currentUser;
+  if (user) {
+    auth.sendPasswordResetEmail(user.email).then(() => {
+      alert("קישור לשינוי סיסמה נשלח למייל שלך.");
+    }).catch((error) => {
+      alert("שגיאה: " + error.message);
+    });
+  } else {
+    alert("אין משתמש מחובר.");
+  }
 }
 
-function changePassword() {
-  alert("קישור לשינוי סיסמה נשלח למייל (דמו)");
+// תמיכה בוואטסאפ
+function contactSupport() {
+  const phone = "972549665726";
+  const message = "שלום, יש לי שאלה על CryptoAbuhay";
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+}
+
+// טופס תמיכה
+function submitSupportForm() {
+  const message = document.getElementById("supportMessage").value;
+  if (!message) {
+    document.getElementById("supportResponse").innerText = "אנא מלא את הטופס.";
+    return;
+  }
+  localStorage.setItem("supportRequest", message);
+  document.getElementById("supportResponse").innerText = "✅ הפנייה נשלחה ונשמרה.";
+}
+
+// בדיקת רשת פעילה
+async function checkNetwork() {
+  const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"), "confirmed");
+  try {
+    const version = await connection.getVersion();
+    document.getElementById("networkStatus").innerText = "סטטוס: מחובר ✅ - " + version["solana-core"];
+  } catch (e) {
+    document.getElementById("networkStatus").innerText = "סטטוס: כשל בחיבור ❌";
+  }
+}
+
+// קישור הפניה אישי
+function copyReferral() {
+  const pubKey = localStorage.getItem("publicKey") || "notfound";
+  const referral = `${window.location.origin}/?ref=${pubKey}`;
+  document.getElementById("referralLink").value = referral;
+  navigator.clipboard.writeText(referral).then(() => {
+    alert("קישור הועתק 🎉");
+  });
 }
