@@ -264,3 +264,17 @@ input:checked + .slider:before {
 .big-button:hover {
   background: linear-gradient(90deg, #4f46e5, #9333ea);
 }
+.settings-item {
+  background-color: #2a2a40;
+  color: white;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.settings-item:hover {
+  background-color: #3a3a5c;
+}
