@@ -224,19 +224,26 @@
     
    
 <!-- תפריט הגדרות מלא חדש -->
-<div class="settings-menu">
-  <h2>⚙️ הגדרות</h2>
-  <input type="text" placeholder="חפש בהגדרות..." style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 8px; border: none; background: #2b2b40; color: white;">
-  <div onclick="location.href='settings/account.html'">ניהול חשבון</div>
-<div onclick="location.href='settings/preferences.html'">העדפות</div>
-<div onclick="location.href='settings/privacy.html'">אבטחה ופרטיות</div>
-<div onclick="location.href='settings/networks.html'">רשתות פעילות</div>
-<div onclick="location.href='settings/address-book.html'">ספר כתובות</div>
-<div onclick="location.href='settings/connected-apps.html'">אפליקציות מחוברות</div>
-<div onclick="location.href='settings/developer.html'">הגדרות מפתחים</div>
-<div onclick="location.href='settings/support.html'">עזרה ותמיכה</div>
-<div onclick="location.href='settings/invite.html'">הזמן חברים</div>
-<div onclick="location.href='settings/about.html'">אודות</div>
+<div id="settingsMenu" class="settings-menu">
+  <h2><i class="fas fa-cog"></i> הגדרות</h2>
+  <input type="text" placeholder="חפש בהגדרות..." class="search-input">
+
+  <button class="close-settings" onclick="toggleSettingsMenu()">סגור ❌</button>
+
+  <div class="settings-options">
+    <div onclick="location.href='settings/account.html'">ניהול חשבון</div>
+    <div onclick="location.href='settings/preferences.html'">העדפות</div>
+    <div onclick="location.href='settings/privacy.html'">אבטחה ופרטיות</div>
+    <div onclick="location.href='settings/networks.html'">רשתות פעילות</div>
+    <div onclick="location.href='settings/address-book.html'">ספר כתובות</div>
+    <div onclick="location.href='settings/connected-apps.html'">אפליקציות מחוברות</div>
+    <div onclick="location.href='settings/developer.html'">הגדרות מפתחים</div>
+    <div onclick="location.href='settings/support.html'">עזרה ותמיכה</div>
+    <div onclick="location.href='settings/invite.html'">הזמן חברים</div>
+    <div onclick="location.href='settings/about.html'">אודות</div>
+    <div onclick="logout()">יציאה מהמערכת</div>
+    <div onclick="disconnectWallet()">התנתקות</div>
+  </div>
 </div>
     <div class="setting-item" onclick="toggleSidebar()"><i class="fas fa-times"></i> סגור</div>
     <div class="setting-row">
