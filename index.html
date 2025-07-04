@@ -340,16 +340,20 @@
   <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
   <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
 </div>
-<div class="container" id="accounts"><h2>ניהול חשבונות</h2><p>בחר, הוסף או מחק חשבונות ארנק.</p></div>
-<div class="container" id="preferences"><h2>העדפות</h2><p>בחר ערכת נושא, שפה, או תצורה מועדפת.</p></div>
-<div class="container" id="privacy"><h2>אבטחה ופרטיות</h2><p>הפעל אימות, נעל את הארנק, מחק נתונים רגישים.</p></div>
-<div class="container" id="networks"><h2>רשתות פעילות</h2><p>בחר או שנה את הרשת המבוקשת: mainnet, devnet ועוד.</p></div>
-<div class="container" id="addressBook"><h2>ספר כתובות</h2><p>נהל אנשי קשר להעברה מהירה.</p></div>
-<div class="container" id="apps"><h2>אפליקציות מחוברות</h2><p>סקור או נתק גישה לאפליקציות צד שלישי.</p></div>
-<div class="container" id="developer"><h2>הגדרות מפתחים</h2><p>חשוף מפתחות, הצג לוגים, או הגדר רשת מותאמת אישית.</p></div>
-<div class="container" id="support"><h2>עזרה ותמיכה</h2><p>עיין בשאלות נפוצות או צור קשר עם התמיכה.</p></div>
-<div class="container" id="invite"><h2>הזמן חברים</h2><p>שתף את האפליקציה וקבל תגמולים.</p></div>
-<div class="container" id="about"><h2>אודות</h2><p>אפליקציית CryptoAbuhay — ארנק Solana מתקדם עם AI.</p></div>
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-content">
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/account.html'">ניהול חשבון</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/preferences.html'">העדפות</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/privacy.html'">פרטיות ואבטחה</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/connected-apps.html'">אפליקציות מחוברות</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/networks.html'">רשתות פעילות</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/address-book.html'">ספר כתובות</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/developer.html'">הגדרות מפתחים</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/support.html'">תמיכה</div>
+    <div class="sidebar-item" onclick="location.href='cryptoabuhay-setting/about.html'">אודות</div>
+    <div class="sidebar-item" onclick="logout()">התנתקות</div>
+  </div>
+</div>
     <div id="import-section">
       <input id="privateKeyInput" type="text" placeholder="הדבק את ה-Private Key שלך" style="width:100%;padding:10px;border-radius:10px;border:none;margin-bottom:10px">
       <button class="btn btn-primary" onclick="loadWallet()">התחבר</button>
