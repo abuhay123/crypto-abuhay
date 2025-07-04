@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>ניהול חשבון | CryptoAbuhay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
+    authDomain: "crypto-abuhay.firebaseapp.com",
+    projectId: "crypto-abuhay",
+    storageBucket: "crypto-abuhay.appspot.com",
+    messagingSenderId: "132295840726",
+    appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h2>ניהול חשבון</h2>
+    <p><strong>שם משתמש:</strong> <span id="userName">טוען...</span></p>
+    <p><strong>אימייל:</strong> <span id="userEmail">טוען...</span></p>
+
+    <button class="btn btn-primary" onclick="changePassword()">🔑 שנה סיסמה</button>
+    <button class="btn btn-secondary" onclick="logout()">🚪 התנתקות</button>
+  </div>
+  <script>
+  // הצגת שם ואימייל המשתמש
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      document.getElementById("userName").innerText = user.displayName || "לא זמין";
+      document.getElementById("userEmail").innerText = user.email || "לא זמין";
+    } else {
+      document.getElementById("userName").innerText = "לא מחובר";
+      document.getElementById("userEmail").innerText = "לא מחובר";
+    }
+  });
+
+  function logout() {
+    firebase.auth().signOut().then(() => {
+      alert("התנתקת בהצלחה");
+      window.location.href = "index.html";
+    }).catch((error) => {
+      alert("שגיאה בהתנתקות: " + error.message);
+    });
+  }
+</script>
+</body>
+</html>
