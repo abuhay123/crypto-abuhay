@@ -7,7 +7,7 @@
   <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-<script src="ai-helper.js"></script>
+
   <script src="script.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" href="icon.png">
@@ -615,11 +615,6 @@ function showPublicKey() {
   document.getElementById("publicKeyDisplay").innerText = key || "לא נמצא";
 }
 </script>
-  <div class="ai-box">
-  <h3>שאל את עוזר הקריפטו 🤖</h3>
-  <input type="text" id="aiInput" placeholder="כתוב כאן שאלה..." />
-  <button onclick="handleAsk()">שלח</button>
-  <p id="aiResult">...</p>
-</div>
+  
 </body>
 </html>
