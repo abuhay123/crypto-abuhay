@@ -2,106 +2,98 @@
 <html lang="he">
 <head>
   <meta charset="UTF-8">
-  <title>הגדרות מפתחים</title>
+  <title>הגדרות מפתחים | CryptoAbuhay</title>
+  <link rel="stylesheet" href="../style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      direction: rtl;
-      font-family: Arial, sans-serif;
-      background-color: #0c0c1d;
+      background: #0c0c1d;
       color: white;
-      margin: 0;
+      font-family: Arial, sans-serif;
       padding: 20px;
+      direction: rtl;
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 30px;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
 
-    .section {
-      background: #1f1f3b;
+    .dev-section {
+      background: #1a1a2f;
+      border-radius: 10px;
       padding: 20px;
       margin-bottom: 20px;
-      border-radius: 12px;
     }
 
-    .section h2 {
-      margin-top: 0;
+    .dev-section h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
     }
 
-    .button {
-      display: inline-block;
-      background: linear-gradient(90deg, #4f46e5, #9333ea);
+    .dev-section button {
+      background: #3b3b5c;
       color: white;
-      padding: 10px 20px;
       border: none;
-      border-radius: 10px;
+      padding: 10px 15px;
+      border-radius: 8px;
       cursor: pointer;
       margin-top: 10px;
+      transition: 0.3s ease;
     }
 
-    .output {
-      background: #333;
+    .dev-section button:hover {
+      background: #5c5c8a;
+    }
+
+    #log-output {
+      margin-top: 15px;
+      background: #12122a;
       padding: 10px;
-      margin-top: 10px;
       border-radius: 8px;
       font-family: monospace;
+      font-size: 14px;
       white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
 
-  <h1>💻 הגדרות מפתחים</h1>
+  <h1>הגדרות מפתחים</h1>
 
-  <div class="section">
-    <h2>🔑 מפתחות ארנק</h2>
-    <button class="button" onclick="showKeys()">הצג מפתחות</button>
-    <div id="keysOutput" class="output"></div>
+  <div class="dev-section">
+    <h2>בדיקת Local Storage</h2>
+    <button onclick="showLocalStorage()">הצג נתונים</button>
+    <div id="log-output"></div>
   </div>
 
-  <div class="section">
-    <h2>🧪 בדיקת חיבור לרשת</h2>
-    <button class="button" onclick="testNetwork()">בדוק חיבור ל-Solana Mainnet</button>
-    <div id="networkOutput" class="output"></div>
+  <div class="dev-section">
+    <h2>ניקוי Local Storage</h2>
+    <button onclick="clearStorage()">נקה הכול</button>
   </div>
 
-  <div class="section">
-    <h2>🪵 לוגים</h2>
-    <button class="button" onclick="showLogs()">הצג קונסול לוג</button>
-    <div id="logsOutput" class="output">פתח את קונסול הדפדפן (F12) לצפייה בלוגים נוספים.</div>
-  </div>
-
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <script>
-    function showKeys() {
-      const publicKey = localStorage.getItem("wallet_publicKey");
-      const secretKey = localStorage.getItem("wallet_secretKey");
-
-      let output = "";
-      output += "🟣 מפתח ציבורי:\n" + (publicKey || "לא קיים") + "\n\n";
-      output += "🔐 מפתח פרטי:\n" + (secretKey || "לא קיים");
-
-      document.getElementById("keysOutput").innerText = output;
-    }
-
-    async function testNetwork() {
-      try {
-        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-        const version = await connection.getVersion();
-        document.getElementById("networkOutput").innerText = "✅ מחובר לרשת:\n" + JSON.stringify(version, null, 2);
-      } catch (e) {
-        document.getElementById("networkOutput").innerText = "❌ שגיאה: לא ניתן להתחבר לרשת.";
+    function showLocalStorage() {
+      const output = document.getElementById('log-output');
+      const keys = Object.keys(localStorage);
+      if (keys.length === 0) {
+        output.textContent = 'אין נתונים ב-Local Storage.';
+        return;
       }
+
+      let result = '';
+      keys.forEach(key => {
+        result += `${key}: ${localStorage.getItem(key)}\n`;
+      });
+      output.textContent = result;
     }
 
-    function showLogs() {
-      console.log("== CryptoAbuhay Developer Mode ==");
-      console.log("🔑 PublicKey:", localStorage.getItem("wallet_publicKey"));
-      console.log("🔐 SecretKey:", localStorage.getItem("wallet_secretKey"));
-      console.log("📡 Network: Solana Mainnet");
-      alert("לוגים נשלחו לקונסול (F12)");
+    function clearStorage() {
+      if (confirm('האם אתה בטוח שברצונך למחוק את כל הנתונים?')) {
+        localStorage.clear();
+        alert('כל הנתונים נמחקו.');
+        document.getElementById('log-output').textContent = '';
+      }
     }
   </script>
 
