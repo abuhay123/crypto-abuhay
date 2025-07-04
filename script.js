@@ -100,12 +100,3 @@ async function checkNetwork() {
   }
 }
 
-// קישור הפניה אישי
-function copyReferral() {
-  const pubKey = localStorage.getItem("publicKey") || "notfound";
-  const referral = `${window.location.origin}/?ref=${pubKey}`;
-  document.getElementById("referralLink").value = referral;
-  navigator.clipboard.writeText(referral).then(() => {
-    alert("קישור הועתק 🎉");
-  });
-}
