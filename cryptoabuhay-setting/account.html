@@ -1,5 +1,5 @@
-# הגדרה מחדש של תוכן הקובץ
-accounts_html = """
+# יצירת גרסה מעודכנת עם פעולות תואמות בדיוק למה שבתמונה:
+accounts_page = """
 <!DOCTYPE html>
 <html lang="he">
 <head>
@@ -37,7 +37,7 @@ accounts_html = """
       flex-direction: column;
     }
     .account-label {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: bold;
     }
     .account-value {
@@ -57,12 +57,13 @@ accounts_html = """
     }
     .edit-icon {
       cursor: pointer;
-      background: #333;
       padding: 8px;
-      border-radius: 10px;
+      border-radius: 12px;
+      background-color: #2a2a2a;
+      transition: background 0.2s;
     }
     .edit-icon:hover {
-      background: #555;
+      background-color: #444;
     }
     .section-label {
       margin: 20px 0 10px;
@@ -91,11 +92,7 @@ accounts_html = """
   </style>
 </head>
 <body>
-  <h2 style="margin-bottom: 20px;">הארנקים שלך</h2>
-  <div style="display: flex; align-items: center; margin-bottom: 20px;">
-    <img src="../icon.png" alt="Profile" style="width:40px; height:40px; border-radius:50%; margin-left: 10px;">
-    <span>@yakovabuhay</span>
-  </div>
+  <h2 style="margin-bottom: 20px;">Your Accounts</h2>
 
   <div class="account-card primary">
     <div style="display: flex; align-items: center;">
@@ -105,7 +102,9 @@ accounts_html = """
         <div class="account-value">$126.45</div>
       </div>
     </div>
-    <div class="edit-icon" onclick="editWalletName('A1')">✏️</div>
+    <div class="edit-icon" onclick="editWalletName('A1')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M14.06 9.02l.92.92L6.5 18.52H5.5v-1L14.06 9.02M17.66 3c-.26 0-.52.1-.71.29L15.13 5.1l3.78 3.78 1.82-1.82c.39-.39.39-1.02 0-1.41L18.37 3.3c-.2-.19-.45-.3-.71-.3M14.06 6.19L3 17.25V21h3.75l11.06-11.06-3.75-3.75z"/></svg>
+    </div>
   </div>
 
   <div class="section-label">Other</div>
@@ -115,28 +114,33 @@ accounts_html = """
       <div class="account-id">A2</div>
       <div class="account-info">
         <div class="account-label">Account 2</div>
+        <div class="account-value">$0.00</div>
       </div>
     </div>
-    <div class="edit-icon" onclick="editWalletName('A2')">✏️</div>
+    <div class="edit-icon" onclick="editWalletName('A2')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M14.06 9.02l.92.92L6.5 18.52H5.5v-1L14.06 9.02M17.66 3c-.26 0-.52.1-.71.29L15.13 5.1l3.78 3.78 1.82-1.82c.39-.39.39-1.02 0-1.41L18.37 3.3c-.2-.19-.45-.3-.71-.3M14.06 6.19L3 17.25V21h3.75l11.06-11.06-3.75-3.75z"/></svg>
+    </div>
   </div>
 
   <div class="bottom-buttons">
-    <button class="btn btn-profile" onclick="window.location.href='../profile.html'">צפייה בפרופיל</button>
-    <button class="btn btn-add" onclick="addNewWallet()">הוסף ארנק</button>
+    <button class="btn btn-profile" onclick="viewProfile()">View Profile</button>
+    <button class="btn btn-add" onclick="addNewWallet()">Add Wallet</button>
   </div>
 
   <script>
     function editWalletName(id) {
-      const newName = prompt("הכנס שם חדש לארנק " + id);
+      const newName = prompt("Enter a new name for wallet " + id);
       if (newName) {
-        alert("השם שונה ל: " + newName + " (שמור ב־localStorage או Firebase בהתאם)");
-        // פה אפשר לעדכן גם localStorage או שליחה לשרת
+        alert("New name for " + id + ": " + newName);
       }
     }
 
+    function viewProfile() {
+      window.location.href = "../profile.html";
+    }
+
     function addNewWallet() {
-      alert("הוספת ארנק חדש (כאן תבוצע יצירת ארנק חדש והצגתו)");
-      // פעולה אמיתית תבוצע כאן בהתאם למערכת הארנקים שלך
+      alert("This would trigger wallet creation logic.");
     }
   </script>
 </body>
@@ -144,8 +148,7 @@ accounts_html = """
 """
 
 # שמירת הקובץ
-file_path = "/mnt/data/accounts.html"
-with open(file_path, "w", encoding="utf-8") as f:
-    f.write(accounts_html)
+with open("/mnt/data/accounts.html", "w", encoding="utf-8") as f:
+    f.write(accounts_page)
 
-file_path
+"/mnt/data/accounts.html"
