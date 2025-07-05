@@ -99,4 +99,55 @@ async function checkNetwork() {
     document.getElementById("networkStatus").innerText = "סטטוס: כשל בחיבור ❌";
   }
 }
+// שמור ב-localStorage לפי צורך
+
+function toggleLanguage() {
+  const current = localStorage.getItem("language") || "עברית";
+  const next = current === "עברית" ? "English" : "עברית";
+  document.getElementById("langDisplay").innerText = next;
+  localStorage.setItem("language", next);
+}
+
+function changeCurrency() {
+  const options = ["דולר", "שקל", "אירו"];
+  let current = localStorage.getItem("currency") || "דולר";
+  let next = options[(options.indexOf(current) + 1) % options.length];
+  document.getElementById("currencyDisplay").innerText = next;
+  localStorage.setItem("currency", next);
+}
+
+function toggleNotifications() {
+  const current = localStorage.getItem("notifications") || "פעיל";
+  const next = current === "פעיל" ? "כבוי" : "פעיל";
+  document.getElementById("notifDisplay").innerText = next;
+  localStorage.setItem("notifications", next);
+}
+
+function changeExplorer() {
+  const options = ["SolScan", "Solana Explorer", "Solana Beach"];
+  let current = localStorage.getItem("explorer") || "SolScan";
+  let next = options[(options.indexOf(current) + 1) % options.length];
+  document.getElementById("explorerDisplay").innerText = next;
+  localStorage.setItem("explorer", next);
+}
+
+function changeAppIcon() {
+  alert("תכונה זו תתווסף בהמשך 🎨");
+}
+
+function setBitcoinAddress() {
+  const addr = prompt("הכנס כתובת ביטקוין מועדפת:");
+  if (addr) {
+    document.getElementById("btcAddressDisplay").innerText = addr;
+    localStorage.setItem("btcAddress", addr);
+  }
+}
+
+function setMotionLevel() {
+  const options = ["מלא", "מופחת"];
+  let current = localStorage.getItem("motion") || "מלא";
+  let next = options[(options.indexOf(current) + 1) % options.length];
+  document.getElementById("motionDisplay").innerText = next;
+  localStorage.setItem("motion", next);
+}
 
