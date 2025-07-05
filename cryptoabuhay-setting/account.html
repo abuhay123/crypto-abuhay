@@ -5,50 +5,126 @@
   <title>ניהול חשבון | CryptoAbuhay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
-    authDomain: "crypto-abuhay.firebaseapp.com",
-    projectId: "crypto-abuhay",
-    storageBucket: "crypto-abuhay.appspot.com",
-    messagingSenderId: "132295840726",
-    appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
-  };
-  firebase.initializeApp(firebaseConfig);
-</script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-  <script src="script.js" defer></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #0c0c1d;
+      color: white;
+      direction: rtl;
+    }
+
+    .container {
+      padding: 30px 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2563eb;
+    }
+
+    .btn-secondary {
+      background-color: #e11d48;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #be123c;
+    }
+
+    .back-button {
+      display: block;
+      margin-top: 30px;
+      text-align: center;
+      color: #8b5cf6;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h2>ניהול חשבון</h2>
+    <h2>🧾 ניהול חשבון</h2>
+
     <p><strong>שם משתמש:</strong> <span id="userName">טוען...</span></p>
     <p><strong>אימייל:</strong> <span id="userEmail">טוען...</span></p>
 
     <button class="btn btn-primary" onclick="changePassword()">🔑 שנה סיסמה</button>
     <button class="btn btn-secondary" onclick="logout()">🚪 התנתקות</button>
-  </div>
-  <script>
-  // הצגת שם ואימייל המשתמש
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      document.getElementById("userName").innerText = user.displayName || "לא זמין";
-      document.getElementById("userEmail").innerText = user.email || "לא זמין";
-    } else {
-      document.getElementById("userName").innerText = "לא מחובר";
-      document.getElementById("userEmail").innerText = "לא מחובר";
-    }
-  });
 
-  function logout() {
-    firebase.auth().signOut().then(() => {
-      alert("התנתקת בהצלחה");
-      window.location.href = "index.html";
-    }).catch((error) => {
-      alert("שגיאה בהתנתקות: " + error.message);
+    <a href="index.html" class="back-button">← חזרה לדף הבית</a>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
+      authDomain: "crypto-abuhay.firebaseapp.com",
+      projectId: "crypto-abuhay",
+      storageBucket: "crypto-abuhay.appspot.com",
+      messagingSenderId: "132295840726",
+      appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        document.getElementById("userName").innerText = user.displayName || "לא זמין";
+        document.getElementById("userEmail").innerText = user.email || "לא זמין";
+      } else {
+        document.getElementById("userName").innerText = "לא מחובר";
+        document.getElementById("userEmail").innerText = "לא מחובר";
+      }
     });
-  }
-</script>
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        alert("התנתקת בהצלחה");
+        window.location.href = "index.html";
+      }).catch((error) => {
+        alert("שגיאה בהתנתקות: " + error.message);
+      });
+    }
+
+    function changePassword() {
+      const email = firebase.auth().currentUser?.email;
+      if (!email) return alert("אין משתמש מחובר.");
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+          alert("קישור לאיפוס סיסמה נשלח לאימייל שלך.");
+        })
+        .catch((error) => {
+          alert("שגיאה: " + error.message);
+        });
+    }
+  </script>
 </body>
 </html>
