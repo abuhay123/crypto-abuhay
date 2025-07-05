@@ -140,3 +140,8 @@ function showWalletButtons() {
     console.warn("לא ניתן להציג כפתורי ארנק:", e);
   }
 }
+import { updateProfile } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+await updateProfile(user, {
+  displayName: "יעקב אבוהי" // או מה שהמשתמש הזין
+});
