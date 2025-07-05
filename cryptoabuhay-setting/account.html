@@ -1,171 +1,151 @@
+# הגדרה מחדש של תוכן הקובץ
+accounts_html = """
 <!DOCTYPE html>
 <html lang="he">
 <head>
   <meta charset="UTF-8">
-  <title>ניהול חשבון | CryptoAbuhay</title>
+  <title>ניהול ארנקים | CryptoAbuhay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+  <script defer src="../script.js"></script>
   <style>
     body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
       background: #0c0c1d;
       color: white;
+      font-family: 'Arial', sans-serif;
       direction: rtl;
+      margin: 0;
+      padding: 20px;
     }
-
-    .container {
-      padding: 30px 20px;
-      max-width: 600px;
-      margin: auto;
+    .account-card {
+      background: #1e1e2f;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
+    .account-card.primary {
+      background: #9d8eff;
+      color: black;
     }
-
-    p {
-      font-size: 16px;
-      margin-bottom: 10px;
+    .account-info {
+      display: flex;
+      flex-direction: column;
     }
-
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
+    .account-label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .account-value {
+      font-size: 18px;
+    }
+    .account-id {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #444;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 12px;
+    }
+    .edit-icon {
       cursor: pointer;
-      transition: 0.3s;
+      background: #333;
+      padding: 8px;
+      border-radius: 10px;
     }
-
-    .btn-primary {
-      background-color: #3b82f6;
+    .edit-icon:hover {
+      background: #555;
+    }
+    .section-label {
+      margin: 20px 0 10px;
+      color: #aaa;
+    }
+    .bottom-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+    .btn {
+      padding: 12px 20px;
+      border-radius: 20px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .btn-profile {
+      background: #2e2e2e;
       color: white;
     }
-
-    .btn-primary:hover {
-      background-color: #2563eb;
-    }
-
-    .btn-secondary {
-      background-color: #e11d48;
-      color: white;
-    }
-
-    .btn-secondary:hover {
-      background-color: #be123c;
-    }
-
-    .back-button {
-      display: block;
-      margin-top: 30px;
-      text-align: center;
-      color: #8b5cf6;
-      text-decoration: none;
+    .btn-add {
+      background: #9d8eff;
+      color: black;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>🧾 ניהול חשבון</h2>
-
-    <p><strong>שם משתמש:</strong> <span id="userName">טוען...</span></p>
-    <p><strong>אימייל:</strong> <span id="userEmail">טוען...</span></p>
-
-    <button class="btn btn-primary" onclick="changePassword()">🔑 שנה סיסמה</button>
-    <div id="changePasswordForm" style="display:none; margin-top:20px;">
-  <input type="password" id="currentPassword" placeholder="סיסמה נוכחית"><br><br>
-  <input type="password" id="newPassword" placeholder="סיסמה חדשה"><br><br>
-  <input type="password" id="confirmPassword" placeholder="אימות סיסמה חדשה"><br><br>
-  <button onclick="submitPasswordChange()">אישור שינוי</button>
-</div>
-    <button class="btn btn-secondary" onclick="logout()">🚪 התנתקות</button>
-
-    <a href="../index.html" class="back-button">← חזרה לדף הבית</a>
-
+  <h2 style="margin-bottom: 20px;">הארנקים שלך</h2>
+  <div style="display: flex; align-items: center; margin-bottom: 20px;">
+    <img src="../icon.png" alt="Profile" style="width:40px; height:40px; border-radius:50%; margin-left: 10px;">
+    <span>@yakovabuhay</span>
   </div>
 
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut,
-    sendPasswordResetEmail
-  } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-    import {
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updatePassword
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+  <div class="account-card primary">
+    <div style="display: flex; align-items: center;">
+      <div class="account-id">A1</div>
+      <div class="account-info">
+        <div class="account-label">Account 1</div>
+        <div class="account-value">$126.45</div>
+      </div>
+    </div>
+    <div class="edit-icon" onclick="editWalletName('A1')">✏️</div>
+  </div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
-    authDomain: "crypto-abuhay.firebaseapp.com",
-    projectId: "crypto-abuhay",
-    storageBucket: "crypto-abuhay.appspot.com",
-    messagingSenderId: "132295840726",
-    appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
-  };
+  <div class="section-label">Other</div>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  <div class="account-card">
+    <div style="display: flex; align-items: center;">
+      <div class="account-id">A2</div>
+      <div class="account-info">
+        <div class="account-label">Account 2</div>
+      </div>
+    </div>
+    <div class="edit-icon" onclick="editWalletName('A2')">✏️</div>
+  </div>
 
-  const userName = document.getElementById("userName");
-  const userEmail = document.getElementById("userEmail");
+  <div class="bottom-buttons">
+    <button class="btn btn-profile" onclick="window.location.href='../profile.html'">צפייה בפרופיל</button>
+    <button class="btn btn-add" onclick="addNewWallet()">הוסף ארנק</button>
+  </div>
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      userName.textContent = user.displayName || "לא זמין";
-      userEmail.textContent = user.email || "לא זמין";
-    } else {
-      userName.textContent = "לא מחובר";
-      userEmail.textContent = "לא מחובר";
+  <script>
+    function editWalletName(id) {
+      const newName = prompt("הכנס שם חדש לארנק " + id);
+      if (newName) {
+        alert("השם שונה ל: " + newName + " (שמור ב־localStorage או Firebase בהתאם)");
+        // פה אפשר לעדכן גם localStorage או שליחה לשרת
+      }
     }
-  });
 
-  window.logout = function () {
-    signOut(auth).then(() => {
-      alert("התנתקת בהצלחה");
-      window.location.href = "../index.html";
-    }).catch((error) => {
-      alert("שגיאה בהתנתקות: " + error.message);
-    });
-  };
-
-window.changePassword = function () {
-  document.getElementById("changePasswordForm").style.display = "block";
-};
-
-window.submitPasswordChange = async function () {
-  const currentPassword = document.getElementById("currentPassword").value;
-  const newPassword = document.getElementById("newPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-
-  if (newPassword !== confirmPassword) {
-    alert("הסיסמאות החדשות אינן תואמות.");
-    return;
-  }
-
-  const user = auth.currentUser;
-  const credential = EmailAuthProvider.credential(user.email, currentPassword);
-
-  try {
-    await reauthenticateWithCredential(user, credential);
-    await updatePassword(user, newPassword);
-    alert("הסיסמה שונתה בהצלחה.");
-    document.getElementById("changePasswordForm").style.display = "none";
-  } catch (error) {
-    alert("שגיאה: " + error.message);
-  }
-};
-
-</script>
+    function addNewWallet() {
+      alert("הוספת ארנק חדש (כאן תבוצע יצירת ארנק חדש והצגתו)");
+      // פעולה אמיתית תבוצע כאן בהתאם למערכת הארנקים שלך
+    }
+  </script>
 </body>
 </html>
+"""
+
+# שמירת הקובץ
+file_path = "/mnt/data/accounts.html"
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(accounts_html)
+
+file_path
