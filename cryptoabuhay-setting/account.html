@@ -1,1 +1,196 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>ניהול חשבונות</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #0c0c1d;
+      color: white;
+      font-family: Arial, sans-serif;
+      direction: rtl;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #8e75ff;
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    #walletCount {
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+
+    .wallet-card {
+      background-color: #1f1f2e;
+      border-radius: 16px;
+      padding: 15px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wallet-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .wallet-circle {
+      width: 42px;
+      height: 42px;
+      background-color: #444;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .wallet-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .wallet-balance {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .edit-icon {
+      font-size: 18px;
+      color: #aaa;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-dark {
+      background-color: #333;
+      color: white;
+    }
+
+    .btn-purple {
+      background-color: #8e75ff;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <a href="../index.html" class="back-btn">← חזרה לדף הבית</a>
+  <h2>📂 החשבונות שלך</h2>
+  <p>כמות חשבונות: <span id="walletCount">0</span></p>
+
+  <div id="walletList"></div>
+
+  <div class="buttons">
+    <button class="btn btn-dark" onclick="viewProfile()">הצג פרופיל</button>
+    <button class="btn btn-purple" onclick="addWallet()">הוסף ארנק</button>
+  </div>
+
+  <script>
+    const { Keypair, Connection, clusterApiUrl, PublicKey, LAMPORTS_PER_SOL } = solanaWeb3;
+    const connection = new Connection(clusterApiUrl('mainnet-beta'));
+
+    let wallets = JSON.parse(localStorage.getItem("wallets")) || [];
+
+    function updateDisplay() {
+      const list = document.getElementById("walletList");
+      const count = document.getElementById("walletCount");
+      list.innerHTML = "";
+      count.textContent = wallets.length;
+
+      wallets.forEach((wallet, index) => {
+        const div = document.createElement("div");
+        div.className = "wallet-card";
+
+        const info = document.createElement("div");
+        info.className = "wallet-info";
+
+        const circle = document.createElement("div");
+        circle.className = "wallet-circle";
+        circle.textContent = "A" + (index + 1);
+
+        const nameDiv = document.createElement("div");
+        nameDiv.innerHTML = `
+          <div class="wallet-name">חשבון ${index + 1}</div>
+          <div class="wallet-balance" id="balance-${index}">טוען...</div>
+        `;
+
+        info.appendChild(circle);
+        info.appendChild(nameDiv);
+
+        const editBtn = document.createElement("button");
+        editBtn.className = "edit-icon";
+        editBtn.innerHTML = "✎";
+        editBtn.onclick = () => editWallet(index);
+
+        div.appendChild(info);
+        div.appendChild(editBtn);
+        list.appendChild(div);
+
+        // הצגת יתרה אמיתית
+        connection.getBalance(new PublicKey(wallet.publicKey)).then(balance => {
+          const sol = balance / LAMPORTS_PER_SOL;
+          document.getElementById("balance-" + index).textContent = `${sol.toFixed(4)} SOL`;
+        });
+      });
+    }
+
+    function addWallet() {
+      const keypair = Keypair.generate();
+      wallets.push({
+        publicKey: keypair.publicKey.toBase58(),
+        secretKey: Array.from(keypair.secretKey)
+      });
+      localStorage.setItem("wallets", JSON.stringify(wallets));
+      updateDisplay();
+    }
+
+    function viewProfile() {
+      location.href = "../index.html";
+    }
+
+    function editWallet(index) {
+      const newName = prompt("שנה שם לארנק #" + (index + 1));
+      if (newName) alert("שינוי שם הופעל (הדמיה בלבד)");
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
 
