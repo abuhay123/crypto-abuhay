@@ -1,154 +1,178 @@
-# יצירת גרסה מעודכנת עם פעולות תואמות בדיוק למה שבתמונה:
-accounts_page = """
 <!DOCTYPE html>
 <html lang="he">
 <head>
   <meta charset="UTF-8">
-  <title>ניהול ארנקים | CryptoAbuhay</title>
+  <title>החשבונות שלי | CryptoAbuhay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../style.css">
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-  <script defer src="../script.js"></script>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
     body {
-      background: #0c0c1d;
+      background-color: #0c0c1d;
       color: white;
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       direction: rtl;
-      margin: 0;
       padding: 20px;
     }
-    .account-card {
-      background: #1e1e2f;
+    .wallet-card {
+      background-color: #1e1e2f;
       border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
+      padding: 15px;
+      margin: 10px 0;
       display: flex;
+      align-items: center;
       justify-content: space-between;
+    }
+    .wallet-info {
+      display: flex;
       align-items: center;
     }
-    .account-card.primary {
-      background: #9d8eff;
-      color: black;
-    }
-    .account-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .account-label {
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .account-value {
-      font-size: 18px;
-    }
-    .account-id {
+    .wallet-circle {
+      background-color: #555;
+      border-radius: 50%;
       width: 40px;
       height: 40px;
-      border-radius: 50%;
-      background: #444;
-      color: white;
-      font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-left: 12px;
+      font-weight: bold;
+      margin-left: 10px;
     }
-    .edit-icon {
+    .wallet-name {
+      font-size: 18px;
+    }
+    .wallet-balance {
+      font-size: 14px;
+      color: #ccc;
+    }
+    .edit-btn {
+      background: none;
+      border: none;
       cursor: pointer;
-      padding: 8px;
-      border-radius: 12px;
-      background-color: #2a2a2a;
-      transition: background 0.2s;
+      color: white;
+      font-size: 20px;
     }
-    .edit-icon:hover {
-      background-color: #444;
-    }
-    .section-label {
-      margin: 20px 0 10px;
+    .section-title {
+      margin-top: 30px;
       color: #aaa;
     }
-    .bottom-buttons {
+    .actions {
       display: flex;
       justify-content: space-between;
       margin-top: 40px;
     }
     .btn {
       padding: 12px 20px;
-      border-radius: 20px;
-      border: none;
+      border-radius: 12px;
+      font-weight: bold;
       font-size: 16px;
+      border: none;
       cursor: pointer;
     }
-    .btn-profile {
-      background: #2e2e2e;
+    .btn-dark {
+      background-color: #333;
       color: white;
     }
-    .btn-add {
-      background: #9d8eff;
+    .btn-purple {
+      background-color: #8e75ff;
       color: black;
+    }
+    .back-home {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: white;
+      text-decoration: none;
+      background: #8e75ff;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h2 style="margin-bottom: 20px;">Your Accounts</h2>
+  <a href="../index.html" class="back-home">🏠 חזרה לדף הבית</a>
 
-  <div class="account-card primary">
-    <div style="display: flex; align-items: center;">
-      <div class="account-id">A1</div>
-      <div class="account-info">
-        <div class="account-label">Account 1</div>
-        <div class="account-value">$126.45</div>
-      </div>
-    </div>
-    <div class="edit-icon" onclick="editWalletName('A1')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M14.06 9.02l.92.92L6.5 18.52H5.5v-1L14.06 9.02M17.66 3c-.26 0-.52.1-.71.29L15.13 5.1l3.78 3.78 1.82-1.82c.39-.39.39-1.02 0-1.41L18.37 3.3c-.2-.19-.45-.3-.71-.3M14.06 6.19L3 17.25V21h3.75l11.06-11.06-3.75-3.75z"/></svg>
-    </div>
-  </div>
+  <h2>👤 החשבונות שלי</h2>
+  <p>מספר חשבונות: <span id="walletCount">0</span></p>
+  <div id="walletList"></div>
 
-  <div class="section-label">Other</div>
-
-  <div class="account-card">
-    <div style="display: flex; align-items: center;">
-      <div class="account-id">A2</div>
-      <div class="account-info">
-        <div class="account-label">Account 2</div>
-        <div class="account-value">$0.00</div>
-      </div>
-    </div>
-    <div class="edit-icon" onclick="editWalletName('A2')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M14.06 9.02l.92.92L6.5 18.52H5.5v-1L14.06 9.02M17.66 3c-.26 0-.52.1-.71.29L15.13 5.1l3.78 3.78 1.82-1.82c.39-.39.39-1.02 0-1.41L18.37 3.3c-.2-.19-.45-.3-.71-.3M14.06 6.19L3 17.25V21h3.75l11.06-11.06-3.75-3.75z"/></svg>
-    </div>
-  </div>
-
-  <div class="bottom-buttons">
-    <button class="btn btn-profile" onclick="viewProfile()">View Profile</button>
-    <button class="btn btn-add" onclick="addNewWallet()">Add Wallet</button>
+  <div class="actions">
+    <button class="btn btn-dark" onclick="viewProfile()">הצג פרופיל</button>
+    <button class="btn btn-purple" onclick="addWallet()">➕ הוסף ארנק</button>
   </div>
 
   <script>
-    function editWalletName(id) {
-      const newName = prompt("Enter a new name for wallet " + id);
-      if (newName) {
-        alert("New name for " + id + ": " + newName);
-      }
+    const { Keypair, Connection, clusterApiUrl, PublicKey, LAMPORTS_PER_SOL } = solanaWeb3;
+    const connection = new Connection(clusterApiUrl('mainnet-beta'));
+
+    let walletList = JSON.parse(localStorage.getItem("wallets")) || [];
+
+    function updateWalletDisplay() {
+      const container = document.getElementById("walletList");
+      const walletCount = document.getElementById("walletCount");
+      container.innerHTML = "";
+      walletList.forEach((wallet, index) => {
+        const walletDiv = document.createElement("div");
+        walletDiv.className = "wallet-card";
+
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "wallet-info";
+
+        const circle = document.createElement("div");
+        circle.className = "wallet-circle";
+        circle.textContent = "A" + (index + 1);
+
+        const nameDiv = document.createElement("div");
+        nameDiv.innerHTML = `
+          <div class="wallet-name">ארנק ${index + 1}</div>
+          <div class="wallet-balance" id="balance-${index}">טוען יתרה...</div>
+        `;
+
+        infoDiv.appendChild(circle);
+        infoDiv.appendChild(nameDiv);
+
+        const editBtn = document.createElement("button");
+        editBtn.className = "edit-btn";
+        editBtn.innerHTML = "✏️";
+        editBtn.onclick = () => editWallet(index);
+
+        walletDiv.appendChild(infoDiv);
+        walletDiv.appendChild(editBtn);
+        container.appendChild(walletDiv);
+
+        // שליפת יתרה
+        connection.getBalance(new PublicKey(wallet.publicKey)).then(lamports => {
+          const sol = lamports / LAMPORTS_PER_SOL;
+          document.getElementById("balance-" + index).textContent = `${sol.toFixed(4)} SOL`;
+        });
+      });
+
+      walletCount.textContent = walletList.length;
+    }
+
+    function addWallet() {
+      const keypair = Keypair.generate();
+      const newWallet = {
+        publicKey: keypair.publicKey.toBase58(),
+        secretKey: Array.from(keypair.secretKey)
+      };
+      walletList.push(newWallet);
+      localStorage.setItem("wallets", JSON.stringify(walletList));
+      updateWalletDisplay();
     }
 
     function viewProfile() {
-      window.location.href = "../profile.html";
+      window.location.href = "../index.html";
     }
 
-    function addNewWallet() {
-      alert("This would trigger wallet creation logic.");
+    function editWallet(index) {
+      const newName = prompt("הזן שם חדש לארנק " + (index + 1));
+      if (newName) {
+        alert("(הדמיה) שינוי שם לארנק #" + (index + 1) + " ל-" + newName);
+      }
     }
+
+    updateWalletDisplay();
   </script>
 </body>
 </html>
-"""
-
-# שמירת הקובץ
-with open("/mnt/data/accounts.html", "w", encoding="utf-8") as f:
-    f.write(accounts_page)
-
-"/mnt/data/accounts.html"
