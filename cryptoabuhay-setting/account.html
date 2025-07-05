@@ -85,47 +85,59 @@
 
   </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
-      authDomain: "crypto-abuhay.firebaseapp.com",
-      projectId: "crypto-abuhay",
-      storageBucket: "crypto-abuhay.appspot.com",
-      messagingSenderId: "132295840726",
-      appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
-    };
-    firebase.initializeApp(firebaseConfig);
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        document.getElementById("userName").innerText = user.displayName || "לא זמין";
-        document.getElementById("userEmail").innerText = user.email || "לא זמין";
-      } else {
-        document.getElementById("userName").innerText = "לא מחובר";
-        document.getElementById("userEmail").innerText = "לא מחובר";
-      }
+  const firebaseConfig = {
+    apiKey: "AIzaSyBmrKqmUtv4zTggScRmKpFCD6XOT4b8gr4",
+    authDomain: "crypto-abuhay.firebaseapp.com",
+    projectId: "crypto-abuhay",
+    storageBucket: "crypto-abuhay.appspot.com",
+    messagingSenderId: "132295840726",
+    appId: "1:132295840726:web:dff5437dc85ea4b54aca77"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const userName = document.getElementById("userName");
+  const userEmail = document.getElementById("userEmail");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userName.textContent = user.displayName || "לא זמין";
+      userEmail.textContent = user.email || "לא זמין";
+    } else {
+      userName.textContent = "לא מחובר";
+      userEmail.textContent = "לא מחובר";
+    }
+  });
+
+  window.logout = function () {
+    signOut(auth).then(() => {
+      alert("התנתקת בהצלחה");
+      window.location.href = "../index.html";
+    }).catch((error) => {
+      alert("שגיאה בהתנתקות: " + error.message);
     });
+  };
 
-    function logout() {
-      firebase.auth().signOut().then(() => {
-        alert("התנתקת בהצלחה");
-        window.location.href = "index.html";
-      }).catch((error) => {
-        alert("שגיאה בהתנתקות: " + error.message);
-      });
+  window.changePassword = function () {
+    const user = auth.currentUser;
+    if (user && user.email) {
+      sendPasswordResetEmail(auth, user.email)
+        .then(() => alert("נשלח מייל לאיפוס סיסמה"))
+        .catch((error) => alert("שגיאה: " + error.message));
+    } else {
+      alert("אין משתמש מחובר.");
     }
-
-    function changePassword() {
-      const email = firebase.auth().currentUser?.email;
-      if (!email) return alert("אין משתמש מחובר.");
-      firebase.auth().sendPasswordResetEmail(email)
-        .then(() => {
-          alert("קישור לאיפוס סיסמה נשלח לאימייל שלך.");
-        })
-        .catch((error) => {
-          alert("שגיאה: " + error.message);
-        });
-    }
-  </script>
+  };
+</script>
 </body>
 </html>
