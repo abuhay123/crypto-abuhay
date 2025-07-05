@@ -4,16 +4,15 @@
   <meta charset="UTF-8">
   <title>CryptoAbuhay</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
   <script src="script.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" href="icon.png">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0c0c1d">
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       direction: rtl;
@@ -22,9 +21,7 @@
       background: #0c0c1d;
       color: white;
     }
-    .container {
-      padding: 30px 20px;
-    }
+    .container { padding: 30px 20px; }
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -36,9 +33,7 @@
       align-items: center;
       gap: 10px;
     }
-    .logo img {
-      width: 36px;
-    }
+    .logo img { width: 36px; }
     .logo span {
       font-size: 20px;
       font-weight: bold;
@@ -66,15 +61,6 @@
       padding: 10px 0;
       cursor: pointer;
     }
-    h1, h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 16px;
-      color: #ccc;
-      margin-bottom: 30px;
-    }
     .btn {
       display: block;
       width: 100%;
@@ -95,20 +81,6 @@
       background: #1f1f3b;
       color: white;
     }
-    .tokens {
-      margin-top: 30px;
-    }
-    .token {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      cursor: pointer;
-    }
-    .token img {
-      width: 32px;
-    }
-
     .ai-button {
       position: fixed;
       bottom: 70px;
@@ -126,75 +98,15 @@
       animation: pulse 1.5s infinite;
       z-index: 999;
     }
-    .ai-button img {
-      width: 28px;
-      height: 28px;
-    }
+    .ai-button img { width: 28px; height: 28px; }
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
-
-    #ai-popup {
-      position: fixed;
-      bottom: 150px;
-      left: 20px;
-      background: #1f1f3b;
-      border: 1px solid #555;
-      border-radius: 12px;
-      padding: 15px;
-      width: 260px;
-      z-index: 1000;
-      display: none;
-    }
-    #ai-popup input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      margin-bottom: 10px;
-    }
-    #ai-popup button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      background: #4f46e5;
-      color: white;
-      font-weight: bold;
-      border: none;
-    }
-
-    .lang-switch {
-      text-align: center;
-      padding: 10px;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    #import-section, #wallet-section, #settings {
-      display: none;
-      margin-top: 30px;
-    }
-    .setting-row {
-      margin-bottom: 15px;
-    }
-    .setting-row label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .setting-row input, .setting-row select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-    }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <div id="welcomeMessage" style="text-align: center; padding: 20px; font-size: 22px; font-weight: bold;"></div>
 <div id="intro-screen" style="
   position: fixed;
   top: 0; left: 0;
@@ -206,396 +118,238 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  animation: fadeOut 2s ease-in-out 2s forwards;
-">
-  <img src="icon.png" alt="CryptoAbuhay Logo" style="width: 120px; height: 120px; animation: bounce 2s infinite;">
-  <h1 style="margin-top: 20px; font-size: 24px; animation: fadeIn 1.5s ease-in-out;">ברוכים הבאים ל־CryptoAbuhay</h1>
+  animation: fadeOut 2s ease-in-out 2s forwards;">
+  <img src=\"icon.png\" alt=\"CryptoAbuhay Logo\" style=\"width: 120px; height: 120px; animation: bounce 2s infinite;\">
+  <h1 style=\"margin-top: 20px; font-size: 24px; animation: fadeIn 1.5s ease-in-out;\">ברוכים הבאים ל־CryptoAbuhay</h1>
 </div>
-  <div class="top-bar">
-    <div class="logo" onclick="location.reload()">
-      <img src="icon.png" alt="Logo">
-      <span>CryptoAbuhay</span>
-    </div>
-    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+<div class="top-bar">
+  <div class="logo" onclick="location.reload()">
+    <img src="icon.png" alt="Logo">
+    <span>CryptoAbuhay</span>
+  </div>
+  <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+</div>
+
+<div class="container" id="home">
+  <div id="welcomeMessage" style="text-align: center; padding: 20px; font-size: 22px; font-weight: bold;"></div>
+
+  <!-- כפתורי הרשמה/התחברות -->
+  <div id="authButtons" style="margin-top: 20px;">
+    <a href="auth.html?action=signup" class="btn btn-primary">הרשמה</a>
+    <a href="auth.html?action=login" class="btn btn-primary">התחברות</a>
   </div>
 
-<div class="settings-menu" id="sidebar">
-  <div class="settings-header">
-    
-   
-<!-- תפריט הגדרות מלא חדש -->
-<div id="settingsMenu" class="settings-menu">
-  <h2><i class="fas fa-cog"></i> הגדרות</h2>
-  <input type="text" placeholder="חפש בהגדרות..." class="search-input">
+  <!-- כפתורי ארנק -->
+  <div id="walletActionButtons" style="display: none; margin-top: 20px;">
+    <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
+    <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
+  </div>
 
-  <button class="close-settings" onclick="toggleSettingsMenu()">סגור ❌</button>
+  <!-- ייבוא ארנק -->
+  <div id="import-section" style="display: none; margin-top: 20px;">
+    <input id="privateKeyInput" type="text" placeholder="הדבק את ה-Private Key שלך"
+           style="width:100%;padding:10px;border-radius:10px;border:none;margin-bottom:10px">
+    <button class="btn btn-primary" onclick="loadWallet()">התחבר</button>
+  </div>
 
-  <div class="settings-options">
-
-  <div id="settingsPanel" class="settings-menu">
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/account.html'">ניהול חשבון</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/preferences.html'">העדפות</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/privacy.html'">פרטיות ואבטחה</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/networks.html'">רשתות פעילות</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/address-book.html'">ספר כתובות</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/connected-apps.html'">אפליקציות מחוברות</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/developer.html'">הגדרות מפתחים</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/support.html'">עזרה ותמיכה</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/invite.html'">הזמן חברים</div>
-  <div class="settings-item" onclick="location.href='cryptoabuhay-setting/about.html'">אודות</div>
-  <div class="settings-item" onclick="logout()">התנתקות</div>
-</div>
-    <div onclick="disconnectWallet()">התנתקות</div>
+  <!-- מטבעות נתמכים -->
+  <div class="tokens">
+    <h2>מטבעות נתמכים</h2>
+    <div class="token" onclick="getTokenInfo('solana')"><img src="sol.png" alt="SOL"> <span>SOL</span></div>
+    <div class="token" onclick="getTokenInfo('usd-coin')"><img src="usdc.png" alt="USDC"> <span>USDC</span></div>
+    <div class="token" onclick="getTokenInfo('tether')"><img src="usdt.png" alt="USDT"> <span>USDT</span></div>
   </div>
 </div>
-      <!-- === בלוקים פונקציונליים אמיתיים של ההגדרות === -->
 
-<!-- ✅ ניהול חשבונות -->
-<div id="accounts" class="setting-section">
-  <h2>ניהול חשבונות</h2>
-  <p><strong>שם משתמש:</strong> <span id="userName">לא מחובר</span></p>
-  <p><strong>אימייל:</strong> <span id="userEmail">לא מחובר</span></p>
-  <button onclick="changePassword()">שנה סיסמה</button>
+<!-- הצגת הארנק -->
+<div class="container" id="wallet-section">
+  <h2>הארנק שלי</h2>
+  <div id="walletData">אין נתונים</div>
 </div>
 
-<!-- ✅ העדפות -->
-<div id="preferences" class="setting-section">
-  <h2>העדפות</h2>
-  <label>שפה:
-    <select onchange="toggleLanguage(this)">
-      <option value="he">עברית</option>
-      <option value="en">English</option>
+<!-- הגדרות -->
+<div class="container" id="settings">
+  <h2>הגדרות</h2>
+  <div class="setting-row">
+    <label>מצב כהה/בהיר (כרגע: כהה)</label>
+    <select>
+      <option selected>כהה</option>
+      <option>בהיר</option>
     </select>
-  </label>
-</div>
-
-<!-- ✅ אבטחה ופרטיות -->
-<div id="privacy" class="setting-section">
-  <h2>אבטחה ופרטיות</h2>
-  <p>מפתח ציבורי: <span id="publicKeyDisplay">...</span></p>
-  <p>מפתח פרטי: <span id="privateKeyDisplay">...</span></p>
-  <button onclick="showPublicKey()">הצג מפתח ציבורי</button>
-  <button onclick="showPrivateKey()">הצג מפתח פרטי</button>
-</div>
-
-<!-- ✅ רשתות פעילות -->
-<div id="networks" class="setting-section">
-  <h2>רשתות פעילות</h2>
-  <p>Solana Mainnet</p>
-</div>
-
-<!-- ✅ ספר כתובות -->
-<div id="addressBook" class="setting-section">
-  <h2>ספר כתובות</h2>
-  <p>אין אנשי קשר כרגע.</p>
-</div>
-
-<!-- ✅ אפליקציות מחוברות -->
-<div id="apps" class="setting-section">
-  <h2>אפליקציות מחוברות</h2>
-  <p>אין אפליקציות מחוברות כרגע.</p>
-</div>
-
-<!-- ✅ הגדרות מפתחים -->
-<div id="developer" class="setting-section">
-  <h2>הגדרות מפתחים</h2>
-  <p>פתח את קונסול הדפדפן לצפייה בלוגים.</p>
-</div>
-
-<!-- ✅ עזרה ותמיכה -->
-<div id="support" class="setting-section">
-  <h2>עזרה ותמיכה</h2>
-  <p>זקוק לעזרה? שלח לנו הודעה בוואטסאפ:</p>
-  <button onclick="openWhatsApp()">פתח וואטסאפ</button>
-</div>
-
-<!-- ✅ הזמן חברים -->
-<div id="invite" class="setting-section">
-  <h2>הזמן חברים</h2>
-  <input type="text" value="https://cryptoabuhay.com" readonly style="width:100%">
-</div>
-
-<!-- ✅ אודות -->
-<div id="about" class="setting-section">
-  <h2>אודות</h2>
-  <p>אפליקציית CryptoAbuhay נוצרה על ידי יעקב אבוהי, יזם צעיר שחי ונושם חדשנות וטכנולוגיה. מטרתה של האפליקציה היא להנגיש את עולם הקריפטו לכל אחד בצורה פשוטה, מאובטחת ומתקדמת.</p>
-</div>
-  <button class="btn btn-secondary" onclick="logout()">התנתקות</button>
-</div>
+  </div>
+  <div class="setting-row">
+    <label>שפת ממשק</label>
+    <select onchange="switchLang()">
+      <option selected>עברית</option>
+      <option>English</option>
+    </select>
+  </div>
+  <div class="setting-row">
+    <label>מחיקת מטמון</label>
+    <button class="btn btn-secondary" onclick="clearStorage()">נקה נתונים מקומיים</button>
   </div>
 </div>
 
-  <div class="container" id="home">
-    <!-- כפתורי הרשמה והתחברות בעיצוב זהה לכפתור צור ארנק -->
-<!-- בלוק כפתורי הרשמה/התחברות -->
-<div id="authButtons" style="margin-top: 20px;">
-  <a href="auth.html?action=signup" class="btn btn-primary">הרשמה</a>
-  <a href="auth.html?action=login" class="btn btn-primary">התחברות</a>
-</div>
-
-<!-- בלוק כפתורי ארנק -->
-<div id="walletActionButtons" style="display: none; margin-top: 20px;">
-  <button class="btn btn-primary" onclick="createWallet()">צור ארנק חדש</button>
-  <button class="btn btn-secondary" onclick="toggleImport()">כבר יש לי ארנק</button>
-</div>
-<div id="sidebar" class="sidebar">
-  <div class="sidebar-content">
-    <div class="settings-list">
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/account.html'">
-    <i class="fas fa-user-circle"></i> ניהול חשבון
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/preferences.html'">
-    <i class="fas fa-sliders-h"></i> העדפות
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/privacy.html'">
-    <i class="fas fa-user-secret"></i> פרטיות ואבטחה
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/networks.html'">
-    <i class="fas fa-network-wired"></i> רשתות פעילות
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/address-book.html'">
-    <i class="fas fa-address-book"></i> ספר כתובות
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/connected-apps.html'">
-    <i class="fas fa-plug"></i> אפליקציות מחוברות
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/developer.html'">
-    <i class="fas fa-code"></i> הגדרות מפתחים
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/support.html'">
-    <i class="fas fa-life-ring"></i> תמיכה ועזרה
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/invite.html'">
-    <i class="fas fa-user-friends"></i> הזמן חברים
-  </div>
-  <div class="setting-item" onclick="location.href='cryptoabuhay-setting/about.html'">
-    <i class="fas fa-info-circle"></i> אודות
-  </div>
-</div>
-</div>
-    <div id="import-section">
-      <input id="privateKeyInput" type="text" placeholder="הדבק את ה-Private Key שלך" style="width:100%;padding:10px;border-radius:10px;border:none;margin-bottom:10px">
-      <button class="btn btn-primary" onclick="loadWallet()">התחבר</button>
-    </div>
-
-    <div class="tokens">
-      <h2>מטבעות נתמכים</h2>
-      <div class="token" onclick="getTokenInfo('solana')"><img src="sol.png" alt="SOL"> <span>SOL</span></div>
-      <div class="token" onclick="getTokenInfo('usd-coin')"><img src="usdc.png" alt="USDC"> <span>USDC</span></div>
-      <div class="token" onclick="getTokenInfo('tether')"><img src="usdt.png" alt="USDT"> <span>USDT</span></div>
-    </div>
-  </div>
-
-  <div class="container" id="wallet-section">
-    <h2>הארנק שלי</h2>
-    <div id="walletData">אין נתונים</div>
-  </div>
-
-  <div class="container" id="settings">
-    <h2>הגדרות</h2>
-    <div class="setting-row">
-      <label>מצב כהה/בהיר (כרגע: כהה)</label>
-      <select>
-        <option selected>כהה</option>
-        <option>בהיר</option>
-      </select>
-    </div>
-    <div class="setting-row">
-      <label>שפת ממשק</label>
-      <select onchange="switchLang()">
-        <option selected>עברית</option>
-        <option>English</option>
-      </select>
-    </div>
-    <div class="setting-row">
-      <label>מחיקת מטמון</label>
-      <button class="btn btn-secondary" onclick="clearStorage()">נקה נתונים מקומיים</button>
-    </div>
-  </div>
-
-  <!-- כפתור עוזר AI -->
-  <button class="ai-button" onclick="toggleAIPopup()">
-    <img src="ai.png" alt="AI Assistant">
-  </button>
+<!-- כפתור עוזר AI -->
+<button class="ai-button" onclick="toggleAIPopup()">
+  <img src="ai.png" alt="AI Assistant">
+</button>
 
 <!-- כפתור WhatsApp -->
 <button class="whatsapp-button" onclick="openWhatsApp()">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
 </button>
 
+<!-- פופאפ AI -->
+<div id="ai-popup">
+  <input type="text" id="aiInput" placeholder="מה תרצה לדעת?">
+  <button onclick="askAI()">שאל</button>
+  <div id="aiResult" style="color:#ccc; margin-top:10px; font-size:14px;"></div>
+</div>
+
+<!-- מתגים -->
+<div class="switch-container" style="margin-top: 50px; display: flex; justify-content: center; gap: 30px;">
+  <div>
+    <label class="switch">
+      <input type="checkbox" onchange="toggleTheme(this)">
+      <span class="slider"></span>
+    </label>
+    <div class="switch-label">מצב כהה/בהיר</div>
+  </div>
+  <div>
+    <label class="switch">
+      <input type="checkbox" onchange="toggleLanguage(this)">
+      <span class="slider"></span>
+    </label>
+    <div class="switch-label">שינוי שפה</div>
+  </div>
+</div>
 <script>
-  function openWhatsApp() {
-    window.open("https://wa.me/972549665726", "_blank");
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
   }
-</script>
-  <!-- פופאפ AI -->
-  <div id="ai-popup">
-    <input type="text" id="aiInput" placeholder="מה תרצה לדעת?">
-    <button onclick="askAI()">שאל</button>
-    <div id="aiResult" style="color:#ccc; margin-top:10px; font-size:14px;"></div>
-  </div>
 
-  <div class="lang-switch" onclick="switchLang()">English Version</div>
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    toggleSidebar();
+  }
 
-  <!-- מתגים -->
-  <div class="switch-container" style="margin-top: 50px; display: flex; justify-content: center; gap: 30px;">
-    <div>
-      <label class="switch">
-        <input type="checkbox" onchange="toggleTheme(this)">
-        <span class="slider"></span>
-      </label>
-      <div class="switch-label">מצב כהה/בהיר</div>
-    </div>
-    <div>
-      <label class="switch">
-        <input type="checkbox" onchange="toggleLanguage(this)">
-        <span class="slider"></span>
-      </label>
-      <div class="switch-label">שינוי שפה</div>
-    </div>
-  </div>
+  async function createWallet() {
+    const keypair = solanaWeb3.Keypair.generate();
+    const publicKey = keypair.publicKey.toBase58();
+    const secretKey = Array.from(keypair.secretKey);
 
-  <script>
-    function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("active");
-}
+    localStorage.setItem("wallet_publicKey", publicKey);
+    localStorage.setItem("wallet_secretKey", JSON.stringify(secretKey));
 
-    function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-  toggleSidebar();
-}
+    window.location.href = "wallet.html";
+  }
 
-    async function createWallet() {
-  const keypair = solanaWeb3.Keypair.generate();
-  const publicKey = keypair.publicKey.toBase58();
-  const secretKey = Array.from(keypair.secretKey);
-
-  // שמירת הארנק בלוקאל סטורג'
-  localStorage.setItem("wallet_publicKey", publicKey);
-  localStorage.setItem("wallet_secretKey", JSON.stringify(secretKey));
-
-  // מעבר לדף wallet.html
-  window.location.href = "wallet.html";
-}
-
-    function toggleImport() {
+  function toggleImport() {
+    const publicKey = localStorage.getItem("wallet_publicKey");
+    if (publicKey) {
+      window.location.href = "wallet.html";
+    } else {
       const section = document.getElementById('import-section');
       section.style.display = section.style.display === 'none' ? 'block' : 'none';
     }
-
-    async function loadWallet() {
-      try {
-        const input = document.getElementById('privateKeyInput').value;
-        const arr = input.split(',').map(n => parseInt(n));
-        const secret = new Uint8Array(arr);
-        const keypair = solanaWeb3.Keypair.fromSecretKey(secret);
-        const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-        const balance = await conn.getBalance(keypair.publicKey);
-        document.getElementById('walletData').innerText = `כתובת ציבורית: ${keypair.publicKey.toBase58()}\nיתרה: ${balance / solanaWeb3.LAMPORTS_PER_SOL} SOL`;
-        document.getElementById('wallet-section').scrollIntoView({ behavior: 'smooth' });
-      } catch (e) {
-        alert("נכשל בטעינת הארנק. ודא שהזנת את המפתח כראוי.");
-      }
-    }
-
-    function clearStorage() {
-      localStorage.clear();
-      alert("הנתונים המקומיים נמחקו.");
-    }
-
-    function switchLang() {
-      window.location.href = "wallet.html";
-    }
-
-    async function getTokenInfo(tokenId) {
-      try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${tokenId}`);
-        const data = await res.json();
-        const name = data.name;
-        const price = data.market_data.current_price.usd;
-        const change = data.market_data.price_change_percentage_24h.toFixed(2);
-        alert(`${name}\nמחיר נוכחי: $${price}\nשינוי ב-24 שעות: ${change}%`);
-      } catch (err) {
-        alert('לא ניתן לשלוף נתוני מטבע.');
-      }
-    }
-
-    function toggleAIPopup() {
-      const popup = document.getElementById("ai-popup");
-      popup.style.display = popup.style.display === "none" || popup.style.display === "" ? "block" : "none";
-    }
-
-    async function askAI(question) {
-  const response = await fetch("/api/ask", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ question })
-  });
-
-  const data = await response.json();
-  return data.answer || "אין תשובה.";
-}
-
-    function toggleTheme(elem) {
-      if (elem.checked) {
-        document.body.style.background = '#f5f5f5';
-        document.body.style.color = '#000';
-      } else {
-        document.body.style.background = '#0c0c1d';
-        document.body.style.color = '#fff';
-      }
-    }
-
-    function toggleLanguage(elem) {
-      if (elem.checked) {
-        switchLang();
-      }
-    }
-
-    function openWhatsApp() {
-      const phone = "972549665726";
-      const message = "שלום, רציתי לשאול על CryptoAbuhay";
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
-    }
-    function logout() {
-  localStorage.clear(); // מוחק גם user וגם userDisplayName
-  alert("התנתקת בהצלחה.");
-  window.location.reload(); // מרענן את הדף כדי לעדכן את הכפתורים
-}
-  </script>
-  <script>
-function toggleImport() {
-  const publicKey = localStorage.getItem("wallet_publicKey");
-  if (publicKey) {
-    window.location.href = "wallet.html";
-  } else {
-    const section = document.getElementById('import-section');
-    section.style.display = section.style.display === 'none' ? 'block' : 'none';
   }
-}
-</script>
-    <script>
+
+  async function loadWallet() {
+    try {
+      const input = document.getElementById('privateKeyInput').value;
+      const arr = input.split(',').map(n => parseInt(n));
+      const secret = new Uint8Array(arr);
+      const keypair = solanaWeb3.Keypair.fromSecretKey(secret);
+      const conn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+      const balance = await conn.getBalance(keypair.publicKey);
+      document.getElementById('walletData').innerText = `כתובת ציבורית: ${keypair.publicKey.toBase58()}\nיתרה: ${balance / solanaWeb3.LAMPORTS_PER_SOL} SOL`;
+      document.getElementById('wallet-section').scrollIntoView({ behavior: 'smooth' });
+    } catch (e) {
+      alert("נכשל בטעינת הארנק. ודא שהזנת את המפתח כראוי.");
+    }
+  }
+
+  function clearStorage() {
+    localStorage.clear();
+    alert("הנתונים המקומיים נמחקו.");
+  }
+
+  function switchLang() {
+    window.location.href = "wallet.html";
+  }
+
+  async function getTokenInfo(tokenId) {
+    try {
+      const res = await fetch(`https://api.coingecko.com/api/v3/coins/${tokenId}`);
+      const data = await res.json();
+      const name = data.name;
+      const price = data.market_data.current_price.usd;
+      const change = data.market_data.price_change_percentage_24h.toFixed(2);
+      alert(`${name}\nמחיר נוכחי: $${price}\nשינוי ב-24 שעות: ${change}%`);
+    } catch (err) {
+      alert('לא ניתן לשלוף נתוני מטבע.');
+    }
+  }
+
+  function toggleAIPopup() {
+    const popup = document.getElementById("ai-popup");
+    popup.style.display = popup.style.display === "none" || popup.style.display === "" ? "block" : "none";
+  }
+
+  async function askAI() {
+    const input = document.getElementById("aiInput").value;
+    const response = await fetch("/api/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ question: input })
+    });
+    const data = await response.json();
+    document.getElementById("aiResult").innerText = data.answer || "אין תשובה.";
+  }
+
+  function toggleTheme(elem) {
+    if (elem.checked) {
+      document.body.style.background = '#f5f5f5';
+      document.body.style.color = '#000';
+    } else {
+      document.body.style.background = '#0c0c1d';
+      document.body.style.color = '#fff';
+    }
+  }
+
+  function toggleLanguage(elem) {
+    if (elem.checked) {
+      switchLang();
+    }
+  }
+
+  function openWhatsApp() {
+    const phone = "972549665726";
+    const message = "שלום, רציתי לשאול על CryptoAbuhay";
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
+
+  function logout() {
+    localStorage.clear();
+    alert("התנתקת בהצלחה.");
+    window.location.reload();
+  }
+
   setTimeout(() => {
-    document.getElementById("intro-screen").style.display = "none";
+    const intro = document.getElementById("intro-screen");
+    if (intro) intro.style.display = "none";
   }, 3000);
-</script>
-      <!-- כפתורי ארנק - מוסתרים כברירת מחדל -->
-<div id="walletButtons" style="display: none; margin-top: 30px;">
-  <button id="createWalletBtn">צור ארנק חדש</button>
-  <button id="importWalletBtn">יש לי כבר ארנק</button>
-</div>
-    <script>
+
   const userName = localStorage.getItem("userDisplayName");
   if (userName) {
     document.getElementById("welcomeMessage").innerText = `ברוך הבא, ${userName}!`;
   }
-</script>
-  <script>
-  // שליטה על נראות הכפתורים לפי מצב התחברות
+
   document.addEventListener("DOMContentLoaded", () => {
     const isLoggedIn = localStorage.getItem("userDisplayName");
     const authButtons = document.getElementById("authButtons");
@@ -609,46 +363,44 @@ function toggleImport() {
       if (walletButtons) walletButtons.style.display = "none";
     }
   });
-</script>
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const auth = firebase.auth();
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      const email = user.email || "לא זמין";
-      const name = user.displayName || "לא מוגדר";
-      const emailEl = document.getElementById("userEmail");
-      const nameEl = document.getElementById("userName");
-      if (emailEl) emailEl.innerText = email;
-      if (nameEl) nameEl.innerText = name;
-    }
-  });
-});
 
-function changePassword() {
-  const auth = firebase.auth();
-  const user = auth.currentUser;
-  if (user) {
-    auth.sendPasswordResetEmail(user.email).then(() => {
-      alert("קישור לאיפוס סיסמה נשלח למייל.");
-    }).catch((error) => {
-      alert("שגיאה: " + error.message);
+  document.addEventListener("DOMContentLoaded", () => {
+    const auth = firebase.auth();
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const email = user.email || "לא זמין";
+        const name = user.displayName || "לא מוגדר";
+        const emailEl = document.getElementById("userEmail");
+        const nameEl = document.getElementById("userName");
+        if (emailEl) emailEl.innerText = email;
+        if (nameEl) nameEl.innerText = name;
+      }
     });
-  } else {
-    alert("לא מחובר");
+  });
+
+  function changePassword() {
+    const auth = firebase.auth();
+    const user = auth.currentUser;
+    if (user) {
+      auth.sendPasswordResetEmail(user.email).then(() => {
+        alert("קישור לאיפוס סיסמה נשלח למייל.");
+      }).catch((error) => {
+        alert("שגיאה: " + error.message);
+      });
+    } else {
+      alert("לא מחובר");
+    }
   }
-}
 
-function showPrivateKey() {
-  const key = localStorage.getItem("wallet_secretKey");
-  document.getElementById("privateKeyDisplay").innerText = key || "לא נמצא";
-}
+  function showPrivateKey() {
+    const key = localStorage.getItem("wallet_secretKey");
+    document.getElementById("privateKeyDisplay").innerText = key || "לא נמצא";
+  }
 
-function showPublicKey() {
-  const key = localStorage.getItem("wallet_publicKey");
-  document.getElementById("publicKeyDisplay").innerText = key || "לא נמצא";
-}
+  function showPublicKey() {
+    const key = localStorage.getItem("wallet_publicKey");
+    document.getElementById("publicKeyDisplay").innerText = key || "לא נמצא";
+  }
 </script>
-  
 </body>
 </html>
