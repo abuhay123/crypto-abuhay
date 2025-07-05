@@ -2,30 +2,95 @@
 <html lang="he">
 <head>
   <meta charset="UTF-8">
-  <title>העדפות | CryptoAbuhay</title>
+  <title>העדפות</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
+  <style>
+    body {
+      direction: rtl;
+      background-color: #0c0c1d;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background: #1a1a2e;
+    }
+    .back-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .title {
+      flex-grow: 1;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .setting-item {
+      padding: 20px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .setting-item span {
+      color: #bbb;
+    }
+    .setting-item:hover {
+      background-color: #151525;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>העדפות</h2>
 
-    <div class="setting-row">
-      <label for="themeSelect">מצב עיצוב:</label>
-      <select id="themeSelect" onchange="toggleTheme(this)">
-        <option value="dark">כהה</option>
-        <option value="light">בהיר</option>
-      </select>
-    </div>
-
-    <div class="setting-row">
-      <label for="langSwitch">שפת ממשק:</label>
-      <select id="langSwitch" onchange="toggleLanguage(this)">
-        <option value="he">עברית</option>
-        <option value="en">English</option>
-      </select>
-    </div>
+  <div class="header">
+    <button class="back-btn" onclick="location.href='../index.html'">←</button>
+    <div class="title">העדפות</div>
   </div>
+
+  <div class="setting-item" onclick="toggleLanguage()">
+    שפת תצוגה
+    <span id="langDisplay">עברית</span>
+  </div>
+
+  <div class="setting-item" onclick="changeCurrency()">
+    מטבע
+    <span id="currencyDisplay">דולר</span>
+  </div>
+
+  <div class="setting-item" onclick="toggleNotifications()">
+    התראות
+    <span id="notifDisplay">פעיל</span>
+  </div>
+
+  <div class="setting-item" onclick="changeExplorer()">
+    חוקר מועדף
+    <span id="explorerDisplay">SolScan</span>
+  </div>
+
+  <div class="setting-item" onclick="changeAppIcon()">
+    אייקון האפליקציה
+    <span>ברירת מחדל</span>
+  </div>
+
+  <div class="setting-item" onclick="setBitcoinAddress()">
+    כתובת ביטקוין מועדפת
+    <span id="btcAddressDisplay">לא הוזנה</span>
+  </div>
+
+  <div class="setting-item" onclick="setMotionLevel()">
+    רמת תנועה
+    <span id="motionDisplay">מלא</span>
+  </div>
+
 </body>
 </html>
